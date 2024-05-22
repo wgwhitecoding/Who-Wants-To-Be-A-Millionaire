@@ -9,7 +9,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    overflow: hidden;
+    overflow: hidden; 
     position: relative;
 }
 
@@ -21,7 +21,7 @@ body {
 }
 
 .logo {
-    width: 150px; 
+    width: 150px;
     height: auto;
 }
 
@@ -82,6 +82,16 @@ body {
     background-color: #555;
 }
 
+
+.answer-btn .percentage {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 0.9em;
+    color: #ffa500;
+}
+
+
 .lifelines-container {
     display: flex;
     justify-content: space-around;
@@ -96,7 +106,7 @@ body {
 
 .lifeline-btn {
     width: 50px; 
-    height: 50px;
+    height: 50px; 
     cursor: pointer;
     transition: transform 0.3s;
 }
@@ -110,7 +120,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 50px; 
+    width: 50px;
     height: 50px; 
     display: none;
 }
@@ -144,4 +154,85 @@ body {
     background-color: orange;
     color: #000;
     font-weight: bold;
+}
+
+
+.friend-suggestion {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #ffa500;
+}
+
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.overlay-content {
+    background-color: #333;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    color: #fff;
+}
+
+.overlay-content h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.overlay-content p {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.overlay-content button {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #444;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.overlay-content button:hover {
+    background-color: #555;
+}
+
+
+@keyframes confetti {
+    0% { transform: translateY(0) rotate(0); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+.confetti {
+    position: absolute;
+    width: 15px; 
+    height: 15px; 
+    background-color: var(--color);
+    top: -15px;
+    z-index: 1500;
+    animation: confetti 4s linear infinite;
+    opacity: 0;
+}
+
+.confetti:nth-child(odd) { 
+    animation-timing-function: ease-in;
+}
+
+.confetti:nth-child(even) { 
+    animation-timing-function: ease-out;
 }

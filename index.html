@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div id="friend-suggestion" class="friend-suggestion">
-                
+               
             </div>
         </div>
         <div class="prize-list-container">
@@ -59,5 +59,21 @@
             </ul>
         </div>
     </div>
+    <div id="overlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Wrong Answer! 😢</h2>
+            <p>You won £<span id="final-prize">0</span>. Try again!</p>
+            <button onclick="startGame()">Try Again</button>
+        </div>
+    </div>
+    <div id="win-overlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Congratulations! 🎉🎊</h2>
+            <p>You won £1,000,000!</p>
+            <button onclick="startGame()">Play Again</button>
+        </div>
+    </div>
+    <div id="confetti-container"></div>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>

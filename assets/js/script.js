@@ -89,6 +89,22 @@ let askTheAudienceUsed = false;
 let phoneAFriendUsed = false;
 let confettiInterval;
 
+
+const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
+const wrongAnswerSound = new Audio('assets/sounds/wronganswers.mp3');
+const backgroundMusic = new Audio('assets/sounds/backgroundmusic.mp3');
+
+const questionElement = document.getElementById('question');
+const answerButtons = document.querySelectorAll('.answer-btn');
+const prizeListItems = document.querySelectorAll('#prize-list li');
+const friendSuggestionElement = document.getElementById('friend-suggestion');
+const overlayElement = document.getElementById('overlay');
+const winOverlayElement = document.getElementById('win-overlay');
+const finalPrizeElement = document.getElementById('final-prize');
+const confettiContainer = document.getElementById('confetti-container');
+
+backgroundMusic.loop = true; // Loop background music
+
 function startGame() {
     currentQuestionIndex = 0;
     currentPrize = 0;
@@ -96,7 +112,13 @@ function startGame() {
     askTheAudienceUsed = false;
     phoneAFriendUsed = false;
     friendSuggestionElement.textContent = ''; 
-   
+    hideOverlay(); 
+    hideWinOverlay();
+    clearConfetti(); 
+    if (confettiInterval) clearInterval(confettiInterval); 
+    backgroundMusic.play(); 
+    showQuestion(questions[currentQuestionIndex]);
+    highlightCurrentPrize();
 }
 
 function showQuestion(question) {
@@ -131,7 +153,7 @@ function selectAnswer(selected, correct) {
         wrongAnswerSound.play(); 
         showOverlay();
         finalPrizeElement.textContent = currentPrize;
-        backgroundMusic.pause();
+        backgroundMusic.pause(); 
     }
 }
 
@@ -152,7 +174,7 @@ function useFiftyFifty() {
     const correctAnswer = question.correct;
     const wrongAnswers = question.answers.filter(answer => answer !== correctAnswer);
     
-    // Randomly select two wrong answers to hide
+    
     const answersToHide = wrongAnswers.sort(() => 0.5 - Math.random()).slice(0, 2);
     
     answerButtons.forEach(button => {
@@ -183,12 +205,12 @@ function generatePercentages(answers, correctAnswer) {
     let percentages = [];
     let remainingPercentage = 100;
 
-    // Assign a random high percentage to the correct answer (between 50 and 80)
+    
     const correctPercentage = Math.floor(Math.random() * 31) + 50;
     percentages.push({ answer: correctAnswer, percentage: correctPercentage });
     remainingPercentage -= correctPercentage;
 
-    // Assign random percentages to the other answers
+    
     for (let i = 0; i < answers.length; i++) {
         if (answers[i] !== correctAnswer) {
             const percentage = Math.floor(Math.random() * remainingPercentage);
@@ -197,11 +219,11 @@ function generatePercentages(answers, correctAnswer) {
         }
     }
 
-    // Ensure all percentages add up to 100
+    
     percentages.sort((a, b) => b.percentage - a.percentage);
     percentages[percentages.length - 1].percentage += remainingPercentage;
 
-    // Convert to a map for easy access
+    
     const percentageMap = {};
     percentages.forEach(p => percentageMap[p.answer] = p.percentage);
 
@@ -220,7 +242,7 @@ function phoneAFriend() {
 }
 
 function generateFriendSuggestion(answers, correctAnswer) {
-    const probabilityOfCorrect = 0.75; // 75% chance the friend suggests the correct answer
+    const probabilityOfCorrect = 0.75; 
 
     if (Math.random() < probabilityOfCorrect) {
         return correctAnswer;
@@ -229,3 +251,48 @@ function generateFriendSuggestion(answers, correctAnswer) {
         return wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
     }
 }
+
+function showOverlay() {
+    overlayElement.style.display = "flex";
+}
+
+function hideOverlay() {
+    overlayElement.style.display = "none";
+}
+
+function showWinOverlay() {
+    createConfetti();
+    winOverlayElement.style.display = "flex";
+    confettiInterval = setInterval(createConfetti, 3000); 
+    backgroundMusic.pause(); 
+}
+
+function hideWinOverlay() {
+    winOverlayElement.style.display = "none";
+}
+
+function createConfetti() {
+    clearConfetti(); 
+    for (let i = 0; i < 200; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.top = `${Math.random() * 100 - 50}px`; 
+        confetti.style.backgroundColor = getRandomColor();
+        confettiContainer.appendChild(confetti);
+    }
+}
+
+function clearConfetti() {
+    confettiContainer.innerHTML = '';
+}
+
+function getRandomColor() {
+    const colors = [
+        '#ff0a54', '#ff477e', '#ff85a1', '#fbb1bd', '#f9bec7', '#f8d9e0', '#f6f0f3',
+        '#ff6347', '#ffa07a', '#20b2aa', '#87ceeb', '#ffb6c1', '#ffa500', '#ffd700', '#da70d6'
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+startGame();
