@@ -88,3 +88,13 @@ let fiftyFiftyUsed = false;
 let askTheAudienceUsed = false;
 let phoneAFriendUsed = false;
 let confettiInterval;
+
+function startGame() {
+    currentQuestionIndex = 0;
+    currentPrize = 0;
+    fiftyFiftyUsed = false;
+    askTheAudienceUsed = false;
+    phoneAFriendUsed = false;
+    friendSuggestionElement.textContent = ''; 
+   
+}

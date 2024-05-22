@@ -12,3 +12,14 @@ body {
     overflow: hidden; /* Prevent scrolling */
     position: relative;
 }
+
+.logo-container {
+    position: absolute;
+    top: 60px;
+    left: 60px;
+}
+
+.logo {
+    width: 150px; /* Adjust the size as needed */
+    height: auto;
+}
