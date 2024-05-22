@@ -98,3 +98,39 @@ function startGame() {
     friendSuggestionElement.textContent = ''; 
    
 }
+
+function showQuestion(question) {
+    questionElement.textContent = question.question;
+    answerButtons.forEach((button, index) => {
+        button.style.display = "block";
+        button.textContent = question.answers[index];
+        button.setAttribute('data-answer', question.answers[index]);
+        button.onclick = () => {
+            selectAnswer(button.getAttribute('data-answer'), question.correct);
+            friendSuggestionElement.textContent = ''; 
+        };
+        const percentageSpan = button.querySelector('.percentage');
+        if (percentageSpan) {
+            percentageSpan.remove();
+        }
+    });
+}
+
+function selectAnswer(selected, correct) {
+    if (selected === correct) {
+        correctAnswerSound.play(); 
+        currentPrize = prizeAmounts[currentQuestionIndex];
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            showQuestion(questions[currentQuestionIndex]);
+            highlightCurrentPrize();
+        } else {
+            showWinOverlay();
+        }
+    } else {
+        wrongAnswerSound.play(); 
+        showOverlay();
+        finalPrizeElement.textContent = currentPrize;
+        backgroundMusic.pause();
+    }
+}
