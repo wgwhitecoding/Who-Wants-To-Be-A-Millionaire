@@ -1,0 +1,14 @@
+/* General body styles */
+body {
+    font-family: Arial, sans-serif;
+    background: radial-gradient(circle, rgba(30, 30, 60, 1) 0%, rgba(30, 30, 60, 1) 35%, rgba(30, 30, 60, 0.8) 70%, rgba(30, 30, 60, 0.6) 100%), url('assets/images/oriental-tiles.png'); /* Update to match your background image */
+    background-size: cover;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden; /* Prevent scrolling */
+    position: relative;
+}
