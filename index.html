@@ -21,7 +21,24 @@
                 <button class="answer-btn" id="answer3">Answer 3</button>
                 <button class="answer-btn" id="answer4">Answer 4</button>
             </div>
-         
+            <div class="lifelines-container">
+                <div class="lifeline-wrapper">
+                    <img src="assets/images/Who Wants To Be A Millionaire_5050.png" alt="50:50" class="lifeline-btn" id="fifty-fifty" onclick="useFiftyFifty()">
+                    <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="fifty-fifty-used">
+                </div>
+                <div class="lifeline-wrapper">
+                    <img src="assets/images/Who Wants To Be A Millionaire_Phone.png" alt="Phone a Friend" class="lifeline-btn" id="phone-a-friend" onclick="phoneAFriend()">
+                    <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="phone-a-friend-used">
+                </div>
+                <div class="lifeline-wrapper">
+                    <img src="assets/images/Who Wants To Be A Millionaire_Audience.png" alt="Ask the Audience" class="lifeline-btn" id="ask-the-audience" onclick="askTheAudience()">
+                    <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="ask-the-audience-used">
+                </div>
+            </div>
+            <div id="friend-suggestion" class="friend-suggestion">
+                <!-- Friend's suggestion will be displayed here -->
+            </div>
+        </div>
         <div class="prize-list-container">
             <ul id="prize-list">
                 <li id="prize-15">£1,000,000</li>
@@ -42,7 +59,5 @@
             </ul>
         </div>
     </div>
-    
-    <script src="assets/js/script.js"></script>
 </body>
 </html>
