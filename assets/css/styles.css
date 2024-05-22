@@ -9,7 +9,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    overflow: hidden; 
+    overflow: hidden;
     position: relative;
 }
 
@@ -52,4 +52,34 @@ body {
     background-color: #222;
     border-radius: 10px;
     font-size: 1.5em;
+}
+
+.prize-list-container {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    padding: 20px;
+    width: 30%;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.prize-list-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.prize-list-container li {
+    background-color: #444;
+    padding: 10px;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.prize-list-container .highlight {
+    background-color: orange;
+    color: #000;
+    font-weight: bold;
 }
