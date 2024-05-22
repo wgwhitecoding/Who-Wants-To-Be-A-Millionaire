@@ -134,3 +134,98 @@ function selectAnswer(selected, correct) {
         backgroundMusic.pause();
     }
 }
+
+function highlightCurrentPrize() {
+    prizeListItems.forEach((item, index) => {
+        item.classList.remove('highlight');
+        if (index === 14 - currentQuestionIndex) {
+            item.classList.add('highlight');
+        }
+    });
+}
+
+function useFiftyFifty() {
+    if (fiftyFiftyUsed) return;
+    fiftyFiftyUsed = true;
+
+    const question = questions[currentQuestionIndex];
+    const correctAnswer = question.correct;
+    const wrongAnswers = question.answers.filter(answer => answer !== correctAnswer);
+    
+    // Randomly select two wrong answers to hide
+    const answersToHide = wrongAnswers.sort(() => 0.5 - Math.random()).slice(0, 2);
+    
+    answerButtons.forEach(button => {
+        if (answersToHide.includes(button.getAttribute('data-answer'))) {
+            button.style.display = "none";
+        }
+    });
+}
+
+function askTheAudience() {
+    if (askTheAudienceUsed) return;
+    askTheAudienceUsed = true;
+
+    const question = questions[currentQuestionIndex];
+    const correctAnswer = question.correct;
+    const answerPercentages = generatePercentages(question.answers, correctAnswer);
+
+    answerButtons.forEach(button => {
+        const percentage = answerPercentages[button.getAttribute('data-answer')];
+        const percentageSpan = document.createElement('span');
+        percentageSpan.className = 'percentage';
+        percentageSpan.textContent = ` (${percentage}%)`;
+        button.appendChild(percentageSpan);
+    });
+}
+
+function generatePercentages(answers, correctAnswer) {
+    let percentages = [];
+    let remainingPercentage = 100;
+
+    // Assign a random high percentage to the correct answer (between 50 and 80)
+    const correctPercentage = Math.floor(Math.random() * 31) + 50;
+    percentages.push({ answer: correctAnswer, percentage: correctPercentage });
+    remainingPercentage -= correctPercentage;
+
+    // Assign random percentages to the other answers
+    for (let i = 0; i < answers.length; i++) {
+        if (answers[i] !== correctAnswer) {
+            const percentage = Math.floor(Math.random() * remainingPercentage);
+            percentages.push({ answer: answers[i], percentage });
+            remainingPercentage -= percentage;
+        }
+    }
+
+    // Ensure all percentages add up to 100
+    percentages.sort((a, b) => b.percentage - a.percentage);
+    percentages[percentages.length - 1].percentage += remainingPercentage;
+
+    // Convert to a map for easy access
+    const percentageMap = {};
+    percentages.forEach(p => percentageMap[p.answer] = p.percentage);
+
+    return percentageMap;
+}
+
+function phoneAFriend() {
+    if (phoneAFriendUsed) return;
+    phoneAFriendUsed = true;
+
+    const question = questions[currentQuestionIndex];
+    const correctAnswer = question.correct;
+    const friendSuggestion = generateFriendSuggestion(question.answers, correctAnswer);
+
+    friendSuggestionElement.textContent = `Your friend suggests: ${friendSuggestion}`;
+}
+
+function generateFriendSuggestion(answers, correctAnswer) {
+    const probabilityOfCorrect = 0.75; // 75% chance the friend suggests the correct answer
+
+    if (Math.random() < probabilityOfCorrect) {
+        return correctAnswer;
+    } else {
+        const wrongAnswers = answers.filter(answer => answer !== correctAnswer);
+        return wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
+    }
+}
