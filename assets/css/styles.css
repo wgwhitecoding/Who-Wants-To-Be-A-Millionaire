@@ -9,7 +9,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    overflow: hidden; /* Prevent scrolling */
+    overflow: hidden; 
     position: relative;
 }
 
@@ -20,6 +20,36 @@ body {
 }
 
 .logo {
-    width: 150px; /* Adjust the size as needed */
+    width: 150px; 
     height: auto;
+}
+
+.game-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 90%;
+    max-width: 1200px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.game-container {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    padding: 20px;
+    width: 60%; 
+    max-width: 700px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    margin-right: 20px; 
+    margin-top: 150px;
+}
+
+.question-container {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #222;
+    border-radius: 10px;
+    font-size: 1.5em;
 }
