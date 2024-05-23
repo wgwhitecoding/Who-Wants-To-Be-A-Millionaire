@@ -12,6 +12,7 @@
     </div>
     <div class="game-wrapper">
         <div class="game-container">
+            <div id="timer" class="timer">30</div>
             <div class="question-container">
                 <h2 id="question">Question will appear here</h2>
             </div>
@@ -36,11 +37,10 @@
                 </div>
             </div>
             <div id="friend-suggestion" class="friend-suggestion">
-            
+                
             </div>
-            <div>
-            <button id="next-question" class="next-question" onclick="nextQuestion()">Next Question</button> 
-            </div>
+            <button id="start-button" class="start-button" onclick="startGame()">Start Game</button> 
+            <button id="next-question" class="next-question" onclick="nextQuestion()">Next Question</button>
         </div>
         <div class="prize-list-container">
             <ul id="prize-list">

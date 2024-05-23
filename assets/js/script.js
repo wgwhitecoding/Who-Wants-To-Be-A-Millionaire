@@ -88,8 +88,9 @@ let fiftyFiftyUsed = false;
 let askTheAudienceUsed = false;
 let phoneAFriendUsed = false;
 let confettiInterval;
-let isMusicPlaying = true;
-let answerSelected = false; 
+let isMusicPlaying = false;
+let answerSelected = false;
+let gameStarted = false;
 
 
 const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
@@ -123,7 +124,37 @@ const overlayElement = document.getElementById('overlay');
 const winOverlayElement = document.getElementById('win-overlay');
 const finalPrizeElement = document.getElementById('final-prize');
 const confettiContainer = document.getElementById('confetti-container');
+const startButton = document.getElementById('start-button');
 const nextQuestionButton = document.getElementById('next-question');
+const timerElement = document.getElementById('timer');
+
+let timerInterval;
+let timeLeft = 30;
+
+function startTimer() {
+    clearInterval(timerInterval);
+    timeLeft = 30;
+    timerElement.textContent = timeLeft;
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    timeLeft--;
+    timerElement.textContent = timeLeft;
+    if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        handleTimeOut();
+    }
+}
+
+function handleTimeOut() {
+    showOverlay();
+}
+
+function resetTimer() {
+    clearInterval(timerInterval);
+    timerElement.textContent = "30";
+}
 
 function startGame() {
     currentQuestionIndex = 0;
@@ -136,28 +167,26 @@ function startGame() {
     hideWinOverlay();
     clearConfetti();
     if (confettiInterval) clearInterval(confettiInterval);
-    if (isMusicPlaying) {
-        backgroundMusic.play().catch(error => {
-            console.error("Music play error: ", error);
-        });
-    }
+    document.getElementById('toggle-music').textContent = "Turn Music On";
+    gameStarted = true;
     showQuestion(questions[currentQuestionIndex]);
-    highlightCurrentPrize();
-    resetLifelineIcons(); 
+    highlightCurrentPrize(true);
+    resetLifelineIcons();
+    startButton.style.display = 'none';
     nextQuestionButton.style.display = 'none';
-    answerSelected = false; 
+    answerSelected = false;
 }
 
 function resetAnswerButtonBackgrounds() {
     answerButtons.forEach(button => {
-        button.classList.remove('correct', 'wrong', 'flash-green', 'flash-red'); 
-        button.style.backgroundColor = ''; 
+        button.classList.remove('correct', 'wrong', 'flash-green', 'flash-red');
+        button.style.backgroundColor = '';
     });
 }
 
 function adjustQuestionFontSize(text) {
-    const maxLength = 100; 
-    const baseFontSize = 1.5; 
+    const maxLength = 100;
+    const baseFontSize = 1.5;
     const minFontSize = 1.0;
 
     const length = text.length;
@@ -172,46 +201,56 @@ function adjustQuestionFontSize(text) {
 
 function showQuestion(question) {
     resetAnswerButtonBackgrounds();
-
+    resetTimer();
+    if (gameStarted) {
+        startTimer();
+    }
     questionElement.textContent = question.question;
     adjustQuestionFontSize(question.question);
 
-    
-    var answerLabels = ["A.", "B.", "C.", "D."];
+    const answerLabels = ["A.", "B.", "C.", "D."];
     answerButtons.forEach((button, index) => {
         button.style.display = "block";
         button.textContent = answerLabels[index] + " " + question.answers[index];
         button.setAttribute('data-answer', question.answers[index]);
         button.classList.remove('correct', 'wrong');
         button.onclick = () => {
-            if (!answerSelected) {
+            if (gameStarted && !answerSelected) {
                 selectAnswer(button.getAttribute('data-answer'), question.correct, button);
                 answerSelected = true;
                 disableLifelines();
-                friendSuggestionElement.textContent = ''; 
+                friendSuggestionElement.textContent = '';
             }
         };
         const percentageSpan = button.querySelector('.percentage');
         if (percentageSpan) {
             percentageSpan.remove();
         }
+        button.tabIndex = 0;
+        button.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                button.click();
+            }
+        });
     });
 }
 
 function selectAnswer(selected, correct, button) {
-    if (answerSelected) return; 
+    if (answerSelected) return;
     answerSelected = true;
+    clearInterval(timerInterval);
     if (selected === correct) {
-        playSound(correctAnswerSound); 
+        playSound(correctAnswerSound);
         flashCorrectAnswer(button, () => {
             currentPrize = prizeAmounts[currentQuestionIndex];
             highlightCurrentPrize();
             setTimeout(() => {
-                nextQuestionButton.style.display = 'block'; 
-            }, 500); 
+                nextQuestionButton.style.display = 'block';
+                nextQuestionButton.textContent = 'Next Question';
+            }, 1800); 
         });
     } else {
-        playSound(wrongAnswerSound); 
+        playSound(wrongAnswerSound);
         flashWrongAnswer(button);
     }
 }
@@ -221,62 +260,67 @@ function flashCorrectAnswer(button, callback) {
     setTimeout(() => {
         button.classList.remove('flash-green');
         button.classList.add('correct');
-        setTimeout(callback, 500); 
-    }, 1500); 
+        setTimeout(callback, 500);
+    }, 1500);
 }
 
 function flashWrongAnswer(button) {
     button.classList.add('flash-red');
     setTimeout(() => {
         button.classList.remove('flash-red');
-        button.style.backgroundColor = 'red'; 
-        setTimeout(showOverlay, 3000); 
-    }, 1500); 
+        button.style.backgroundColor = 'red';
+        setTimeout(showOverlay, 3000);
+    }, 1500);
 }
 
 function nextQuestion() {
-    resetAnswerButtonBackgrounds(); 
+    resetAnswerButtonBackgrounds();
     currentQuestionIndex++;
     if (currentQuestionIndex < questions.length) {
+        nextQuestionButton.style.display = 'none';
         showQuestion(questions[currentQuestionIndex]);
-        nextQuestionButton.style.display = 'none'; 
-        answerSelected = false; 
+        answerSelected = false;
+        enableLifelines();
+        startTimer();
     } else {
         showWinOverlay();
     }
 }
 
-function highlightCurrentPrize() {
+function highlightCurrentPrize(initial = false) {
     prizeListItems.forEach((item, index) => {
-        item.classList.remove('highlight');
-        if (index === 14 - currentQuestionIndex) {
-            item.classList.add('highlight');
+        item.classList.remove('highlight', 'flash-orange');
+        if (index === 14 - currentQuestionIndex && !initial) {
+            item.classList.add('flash-orange');
+            setTimeout(() => {
+                item.classList.remove('flash-orange');
+                item.classList.add('highlight');
+            }, 1500);
         }
     });
 }
 
 function useFiftyFifty() {
-    if (fiftyFiftyUsed || currentQuestionIndex >= questions.length || currentQuestionIndex < 0 || answerSelected) return;
+    if (fiftyFiftyUsed) return;
     fiftyFiftyUsed = true;
     showLifelineUsed('fifty-fifty-used');
 
     const question = questions[currentQuestionIndex];
     const correctAnswer = question.correct;
     const wrongAnswers = question.answers.filter(answer => answer !== correctAnswer);
-    
-    
+
     const answerToKeep = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
-    
+
     answerButtons.forEach(button => {
         const answer = button.getAttribute('data-answer');
         if (answer !== correctAnswer && answer !== answerToKeep) {
-            button.textContent = ''; 
+            button.textContent = '';
         }
     });
 }
 
 function askTheAudience() {
-    if (askTheAudienceUsed || currentQuestionIndex >= questions.length || currentQuestionIndex < 0 || answerSelected) return; 
+    if (askTheAudienceUsed) return;
     askTheAudienceUsed = true;
     showLifelineUsed('ask-the-audience-used');
 
@@ -297,12 +341,10 @@ function generatePercentages(answers, correctAnswer) {
     let percentages = [];
     let remainingPercentage = 100;
 
-    
     const correctPercentage = Math.floor(Math.random() * 31) + 50;
     percentages.push({ answer: correctAnswer, percentage: correctPercentage });
     remainingPercentage -= correctPercentage;
 
-    
     for (let i = 0; i < answers.length; i++) {
         if (answers[i] !== correctAnswer) {
             const percentage = Math.floor(Math.random() * remainingPercentage);
@@ -311,11 +353,9 @@ function generatePercentages(answers, correctAnswer) {
         }
     }
 
-    
     percentages.sort((a, b) => b.percentage - a.percentage);
     percentages[percentages.length - 1].percentage += remainingPercentage;
 
-    
     const percentageMap = {};
     percentages.forEach(p => percentageMap[p.answer] = p.percentage);
 
@@ -323,7 +363,7 @@ function generatePercentages(answers, correctAnswer) {
 }
 
 function phoneAFriend() {
-    if (phoneAFriendUsed || currentQuestionIndex >= questions.length || currentQuestionIndex < 0 || answerSelected) return; 
+    if (phoneAFriendUsed) return;
     phoneAFriendUsed = true;
     showLifelineUsed('phone-a-friend-used');
 
@@ -335,7 +375,7 @@ function phoneAFriend() {
 }
 
 function generateFriendSuggestion(answers, correctAnswer) {
-    const probabilityOfCorrect = 0.75; // 
+    const probabilityOfCorrect = 0.75;
 
     if (Math.random() < probabilityOfCorrect) {
         return correctAnswer;
@@ -350,21 +390,24 @@ function showLifelineUsed(lifelineId) {
 }
 
 function resetLifelineIcons() {
-    document.getElementById('fifty-fifty-used').style.display = 'none';
-    document.getElementById('phone-a-friend-used').style.display = 'none';
-    document.getElementById('ask-the-audience-used').style.display = 'none';
+    const lifelineIds = ['fifty-fifty', 'phone-a-friend', 'ask-the-audience'];
+    lifelineIds.forEach(id => {
+        document.getElementById(`${id}-used`).style.display = 'none';
+        document.getElementById(id).style.pointerEvents = 'auto';
+    });
 }
 
 function disableLifelines() {
-    document.getElementById('fifty-fifty').style.pointerEvents = 'none';
-    document.getElementById('phone-a-friend').style.pointerEvents = 'none';
-    document.getElementById('ask-the-audience').style.pointerEvents = 'none';
+    const lifelineIds = ['fifty-fifty', 'phone-a-friend', 'ask-the-audience'];
+    lifelineIds.forEach(id => {
+        document.getElementById(id).style.pointerEvents = 'none';
+    });
 }
 
 function enableLifelines() {
-    document.getElementById('fifty-fifty').style.pointerEvents = 'auto';
-    document.getElementById('phone-a-friend').style.pointerEvents = 'auto';
-    document.getElementById('ask-the-audience').style.pointerEvents = 'auto';
+    if (!fiftyFiftyUsed) document.getElementById('fifty-fifty').style.pointerEvents = 'auto';
+    if (!phoneAFriendUsed) document.getElementById('phone-a-friend').style.pointerEvents = 'auto';
+    if (!askTheAudienceUsed) document.getElementById('ask-the-audience').style.pointerEvents = 'auto';
 }
 
 function showOverlay() {
@@ -378,7 +421,7 @@ function hideOverlay() {
 function showWinOverlay() {
     createConfetti();
     winOverlayElement.style.display = "flex";
-    confettiInterval = setInterval(createConfetti, 3000); 
+    confettiInterval = setInterval(createConfetti, 3000);
 }
 
 function hideWinOverlay() {
@@ -386,7 +429,7 @@ function hideWinOverlay() {
 }
 
 function createConfetti() {
-    clearConfetti(); 
+    clearConfetti();
     for (let i = 0; i < 200; i++) {
         const confetti = document.createElement('div');
         confetti.classList.add('confetti');
@@ -417,4 +460,10 @@ function playSound(sound) {
     }
 }
 
-startGame();
+startButton.onclick = () => {
+    startGame();
+};
+
+nextQuestionButton.onclick = () => {
+    nextQuestion();
+};

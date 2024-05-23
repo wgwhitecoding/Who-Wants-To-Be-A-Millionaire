@@ -1,7 +1,7 @@
 /* General body styles */
 body {
     font-family: Arial, sans-serif;
-    background: radial-gradient(circle, rgba(30, 30, 60, 1) 0%, rgba(30, 30, 60, 1) 35%, rgba(30, 30, 60, 0.8) 70%, rgba(30, 30, 60, 0.6) 100%), url(/assets/images/oriental-tiles.png);
+    background: radial-gradient(circle, rgba(30, 30, 60, 1) 0%, rgba(30, 30, 60, 1) 35%, rgba(30, 30, 60, 0.8) 70%, rgba(30, 30, 60, 0.6) 100%), url(../images/oriental-tiles.png);
     background-size: cover;
     color: #fff;
     display: flex;
@@ -9,10 +9,9 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    overflow: hidden; 
+    overflow: hidden;
     position: relative;
 }
-
 
 .logo-container {
     position: absolute;
@@ -21,7 +20,7 @@ body {
 }
 
 .logo {
-    width: 150px; 
+    width: 150px;
     height: auto;
 }
 
@@ -41,14 +40,14 @@ body {
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 15px;
     padding: 20px;
-    padding-bottom: 40px; 
-    width: 60%; 
+    padding-bottom: 40px;
+    width: 60%;
     max-width: 700px;
     text-align: center;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    margin-right: 20px; 
+    margin-right: 20px;
     margin-top: 80px;
-    height: 500px;
+    height: 550px;
 }
 
 
@@ -61,9 +60,9 @@ body {
     border: 3px solid silver;
     height: 100px;
     display: flex;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
-    text-align: center; 
+    text-align: center;
 }
 
 
@@ -84,12 +83,13 @@ body {
     font-size: 1.2em;
     transition: background-color 0.3s;
     position: relative;
-    color: white; 
+    color: white;
 }
 
 .answer-btn:hover {
     background-color: #555;
 }
+
 
 .correct {
     background-color: green !important;
@@ -105,6 +105,7 @@ body {
     animation: flashGreen 0.5s 3;
 }
 
+
 @keyframes flashRed {
     0%, 100% { background-color: #444; }
     50% { background-color: red; }
@@ -112,6 +113,16 @@ body {
 
 .flash-red {
     animation: flashRed 0.5s 3;
+}
+
+
+@keyframes flashOrange {
+    0%, 100% { background-color: #444; color: #fff; }
+    50% { background-color: orange; color: #000; }
+}
+
+.flash-orange {
+    animation: flashOrange 0.5s 3;
 }
 
 
@@ -137,8 +148,8 @@ body {
 
 
 .lifeline-btn {
-    width: 150px; 
-    height: 90px; 
+    width: 150px;
+    height: 90px;
     cursor: pointer;
     transition: transform 0.3s;
     border-radius: 10px;
@@ -153,9 +164,9 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 150px; 
-    height: 90px; 
-    transform: scale(1.2); 
+    width: 150px;
+    height: 90px;
+    transform: scale(1.2);
     display: none;
 }
 
@@ -164,7 +175,7 @@ body {
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 15px;
     padding: 20px;
-    width: 30%; 
+    width: 30%;
     text-align: center;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
@@ -182,14 +193,13 @@ body {
     font-size: 1.1em;
     border-radius: 5px;
     transition: background-color 0.3s;
-    color: orange; 
+    color: orange;
 }
 
-
-.prize-list-container li:nth-child(5),
-.prize-list-container li:nth-child(10),
-.prize-list-container li:nth-child(15) {
-    color: white;
+.prize-list-container #prize-15,
+.prize-list-container #prize-10,
+.prize-list-container #prize-5 {
+    color: #fff;
 }
 
 .prize-list-container .highlight {
@@ -204,7 +214,7 @@ body {
     padding: 10px;
     border-radius: 10px;
     margin-top: 20px;
-    margin-bottom: 40px; 
+    margin-bottom: 20px; 
     font-size: 1.2em;
     color: #ffa500;
 }
@@ -264,8 +274,8 @@ body {
 
 .confetti {
     position: absolute;
-    width: 15px; 
-    height: 15px; 
+    width: 15px;
+    height: 15px;
     background-color: var(--color);
     top: -15px;
     z-index: 1500;
@@ -273,11 +283,11 @@ body {
     opacity: 0;
 }
 
-.confetti:nth-child(odd) { 
+.confetti:nth-child(odd) {
     animation-timing-function: ease-in;
 }
 
-.confetti:nth-child(even) { 
+.confetti:nth-child(even) {
     animation-timing-function: ease-out;
 }
 
@@ -290,28 +300,59 @@ body {
     font-size: 16px;
     background-color: #444;
     color: #fff;
-    border: 7px solid silver;
-    border-radius: 30px;
+    border: 2px solid silver;
+    border-radius: 10px;
     cursor: pointer;
     z-index: 1000;
 }
 
+#toggle-music:hover {
+    background-color: #555;
+}
+
 
 .next-question {
-    display: none; 
+    display: none;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #444;
+    background-color: #555;
     color: #fff;
     border: 3px solid silver;
     border-radius: 30px;
     cursor: pointer;
     z-index: 1000;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: -20px;
+    margin-top: 10px; 
+    margin-left: 270px;
 }
 
 .next-question:hover {
+    background-color: #ffa500;
+}
+
+
+.timer {
+    font-size: 2em;
+    color: #fff;
+    background-color: #444;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+.start-button {
+    padding: 10px 20px;
+    font-size: 16px;
     background-color: #555;
+    color: #fff;
+    border: 3px solid silver;
+    border-radius: 30px;
+    cursor: pointer;
+    z-index: 1000;
+    margin-bottom: 20px; 
+}
+
+.start-button:hover {
+    background-color: #ffa500;
 }
