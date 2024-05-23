@@ -89,7 +89,7 @@ let askTheAudienceUsed = false;
 let phoneAFriendUsed = false;
 let confettiInterval;
 let isMusicPlaying = true;
-let answerSelected = false;
+let answerSelected = false; 
 
 
 const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
@@ -122,6 +122,7 @@ const friendSuggestionElement = document.getElementById('friend-suggestion');
 const overlayElement = document.getElementById('overlay');
 const winOverlayElement = document.getElementById('win-overlay');
 const finalPrizeElement = document.getElementById('final-prize');
+const confettiContainer = document.getElementById('confetti-container');
 const nextQuestionButton = document.getElementById('next-question');
 
 function startGame() {
@@ -133,8 +134,8 @@ function startGame() {
     friendSuggestionElement.textContent = '';
     hideOverlay();
     hideWinOverlay();
-    clearConfetti(); 
-    if (confettiInterval) clearInterval(confettiInterval); 
+    clearConfetti();
+    if (confettiInterval) clearInterval(confettiInterval);
     if (isMusicPlaying) {
         backgroundMusic.play().catch(error => {
             console.error("Music play error: ", error);
@@ -142,22 +143,22 @@ function startGame() {
     }
     showQuestion(questions[currentQuestionIndex]);
     highlightCurrentPrize();
-    resetLifelineIcons();
+    resetLifelineIcons(); 
     nextQuestionButton.style.display = 'none';
-    answerSelected = false;
+    answerSelected = false; 
 }
 
 function resetAnswerButtonBackgrounds() {
     answerButtons.forEach(button => {
-        button.classList.remove('correct', 'wrong', 'flash-green', 'flash-red');
-        button.style.backgroundColor = '';
+        button.classList.remove('correct', 'wrong', 'flash-green', 'flash-red'); 
+        button.style.backgroundColor = ''; 
     });
 }
 
 function adjustQuestionFontSize(text) {
     const maxLength = 100; 
     const baseFontSize = 1.5; 
-    const minFontSize = 1.0; 
+    const minFontSize = 1.0;
 
     const length = text.length;
     let fontSize = baseFontSize;
@@ -168,15 +169,27 @@ function adjustQuestionFontSize(text) {
 
     questionElement.style.fontSize = `${fontSize}em`;
 }
+
 function showQuestion(question) {
+    resetAnswerButtonBackgrounds();
+
     questionElement.textContent = question.question;
+    adjustQuestionFontSize(question.question);
+
+    
+    var answerLabels = ["A.", "B.", "C.", "D."];
     answerButtons.forEach((button, index) => {
         button.style.display = "block";
-        button.textContent = question.answers[index];
+        button.textContent = answerLabels[index] + " " + question.answers[index];
         button.setAttribute('data-answer', question.answers[index]);
+        button.classList.remove('correct', 'wrong');
         button.onclick = () => {
-            selectAnswer(button.getAttribute('data-answer'), question.correct);
-            friendSuggestionElement.textContent = ''; 
+            if (!answerSelected) {
+                selectAnswer(button.getAttribute('data-answer'), question.correct, button);
+                answerSelected = true;
+                disableLifelines();
+                friendSuggestionElement.textContent = ''; 
+            }
         };
         const percentageSpan = button.querySelector('.percentage');
         if (percentageSpan) {
@@ -185,22 +198,51 @@ function showQuestion(question) {
     });
 }
 
-function selectAnswer(selected, correct) {
+function selectAnswer(selected, correct, button) {
+    if (answerSelected) return; 
+    answerSelected = true;
     if (selected === correct) {
-        correctAnswerSound.play(); 
-        currentPrize = prizeAmounts[currentQuestionIndex];
-        currentQuestionIndex++;
-        if (currentQuestionIndex < questions.length) {
-            showQuestion(questions[currentQuestionIndex]);
+        playSound(correctAnswerSound); 
+        flashCorrectAnswer(button, () => {
+            currentPrize = prizeAmounts[currentQuestionIndex];
             highlightCurrentPrize();
-        } else {
-            showWinOverlay();
-        }
+            setTimeout(() => {
+                nextQuestionButton.style.display = 'block'; 
+            }, 500); 
+        });
     } else {
-        wrongAnswerSound.play(); 
-        showOverlay();
-        finalPrizeElement.textContent = currentPrize;
-        backgroundMusic.pause(); 
+        playSound(wrongAnswerSound); 
+        flashWrongAnswer(button);
+    }
+}
+
+function flashCorrectAnswer(button, callback) {
+    button.classList.add('flash-green');
+    setTimeout(() => {
+        button.classList.remove('flash-green');
+        button.classList.add('correct');
+        setTimeout(callback, 500); 
+    }, 1500); 
+}
+
+function flashWrongAnswer(button) {
+    button.classList.add('flash-red');
+    setTimeout(() => {
+        button.classList.remove('flash-red');
+        button.style.backgroundColor = 'red'; 
+        setTimeout(showOverlay, 3000); 
+    }, 1500); 
+}
+
+function nextQuestion() {
+    resetAnswerButtonBackgrounds(); 
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        showQuestion(questions[currentQuestionIndex]);
+        nextQuestionButton.style.display = 'none'; 
+        answerSelected = false; 
+    } else {
+        showWinOverlay();
     }
 }
 
@@ -214,26 +256,29 @@ function highlightCurrentPrize() {
 }
 
 function useFiftyFifty() {
-    if (fiftyFiftyUsed) return;
+    if (fiftyFiftyUsed || currentQuestionIndex >= questions.length || currentQuestionIndex < 0 || answerSelected) return;
     fiftyFiftyUsed = true;
+    showLifelineUsed('fifty-fifty-used');
 
     const question = questions[currentQuestionIndex];
     const correctAnswer = question.correct;
     const wrongAnswers = question.answers.filter(answer => answer !== correctAnswer);
     
     
-    const answersToHide = wrongAnswers.sort(() => 0.5 - Math.random()).slice(0, 2);
+    const answerToKeep = wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
     
     answerButtons.forEach(button => {
-        if (answersToHide.includes(button.getAttribute('data-answer'))) {
-            button.style.display = "none";
+        const answer = button.getAttribute('data-answer');
+        if (answer !== correctAnswer && answer !== answerToKeep) {
+            button.textContent = ''; 
         }
     });
 }
 
 function askTheAudience() {
-    if (askTheAudienceUsed) return;
+    if (askTheAudienceUsed || currentQuestionIndex >= questions.length || currentQuestionIndex < 0 || answerSelected) return; 
     askTheAudienceUsed = true;
+    showLifelineUsed('ask-the-audience-used');
 
     const question = questions[currentQuestionIndex];
     const correctAnswer = question.correct;
@@ -278,8 +323,9 @@ function generatePercentages(answers, correctAnswer) {
 }
 
 function phoneAFriend() {
-    if (phoneAFriendUsed) return;
+    if (phoneAFriendUsed || currentQuestionIndex >= questions.length || currentQuestionIndex < 0 || answerSelected) return; 
     phoneAFriendUsed = true;
+    showLifelineUsed('phone-a-friend-used');
 
     const question = questions[currentQuestionIndex];
     const correctAnswer = question.correct;
@@ -289,7 +335,7 @@ function phoneAFriend() {
 }
 
 function generateFriendSuggestion(answers, correctAnswer) {
-    const probabilityOfCorrect = 0.75; 
+    const probabilityOfCorrect = 0.75; // 
 
     if (Math.random() < probabilityOfCorrect) {
         return correctAnswer;
@@ -297,6 +343,28 @@ function generateFriendSuggestion(answers, correctAnswer) {
         const wrongAnswers = answers.filter(answer => answer !== correctAnswer);
         return wrongAnswers[Math.floor(Math.random() * wrongAnswers.length)];
     }
+}
+
+function showLifelineUsed(lifelineId) {
+    document.getElementById(lifelineId).style.display = 'block';
+}
+
+function resetLifelineIcons() {
+    document.getElementById('fifty-fifty-used').style.display = 'none';
+    document.getElementById('phone-a-friend-used').style.display = 'none';
+    document.getElementById('ask-the-audience-used').style.display = 'none';
+}
+
+function disableLifelines() {
+    document.getElementById('fifty-fifty').style.pointerEvents = 'none';
+    document.getElementById('phone-a-friend').style.pointerEvents = 'none';
+    document.getElementById('ask-the-audience').style.pointerEvents = 'none';
+}
+
+function enableLifelines() {
+    document.getElementById('fifty-fifty').style.pointerEvents = 'auto';
+    document.getElementById('phone-a-friend').style.pointerEvents = 'auto';
+    document.getElementById('ask-the-audience').style.pointerEvents = 'auto';
 }
 
 function showOverlay() {
@@ -311,7 +379,6 @@ function showWinOverlay() {
     createConfetti();
     winOverlayElement.style.display = "flex";
     confettiInterval = setInterval(createConfetti, 3000); 
-    backgroundMusic.pause(); 
 }
 
 function hideWinOverlay() {
@@ -324,7 +391,7 @@ function createConfetti() {
         const confetti = document.createElement('div');
         confetti.classList.add('confetti');
         confetti.style.left = `${Math.random() * 100}%`;
-        confetti.style.top = `${Math.random() * 100 - 50}px`; 
+        confetti.style.top = `${Math.random() * 100 - 50}px`;
         confetti.style.backgroundColor = getRandomColor();
         confettiContainer.appendChild(confetti);
     }
@@ -340,6 +407,14 @@ function getRandomColor() {
         '#ff6347', '#ffa07a', '#20b2aa', '#87ceeb', '#ffb6c1', '#ffa500', '#ffd700', '#da70d6'
     ];
     return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function playSound(sound) {
+    if (isMusicPlaying) {
+        sound.play().catch(error => {
+            console.error("Sound play error: ", error);
+        });
+    }
 }
 
 startGame();
