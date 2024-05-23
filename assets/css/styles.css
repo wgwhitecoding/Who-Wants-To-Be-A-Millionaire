@@ -5,17 +5,31 @@ body {
     background-size: cover;
     color: #fff;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     height: 100vh;
     margin: 0;
     overflow: hidden;
-    position: relative;
 }
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
 
 .logo-container {
     position: absolute;
-    top: 60px;
+    top: 80px;
     left: 60px;
 }
 
@@ -24,15 +38,14 @@ body {
     height: auto;
 }
 
-
 .game-wrapper {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     width: 90%;
     max-width: 1200px;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-top: 120px;
+    position: relative;
 }
 
 
@@ -46,8 +59,9 @@ body {
     text-align: center;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     margin-right: 20px;
-    margin-top: 80px;
+    margin-top: 60px;
     height: 550px;
+    position: relative;
 }
 
 
@@ -58,7 +72,7 @@ body {
     border-radius: 30px;
     font-size: 1.5em;
     border: 3px solid silver;
-    height: 100px;
+    height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,22 +88,42 @@ body {
 }
 
 
-.answer-btn {
-    padding: 15px;
+.answer-btn, #toggle-music, #rules-button, #difficulty-level {
+    padding: 10px 20px;
+    font-size: 16px;
     background-color: #444;
-    border: 3px solid silver;
-    border-radius: 30px;
+    color: #fff;
+    border: 2px solid silver;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 1.2em;
     transition: background-color 0.3s;
-    position: relative;
-    color: white;
 }
 
-.answer-btn:hover {
+.answer-btn:hover, #toggle-music:hover, #rules-button:hover, #difficulty-level:hover {
     background-color: #555;
 }
 
+#difficulty-level {
+    appearance: none; 
+    background-color: #444;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 2px solid silver;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#difficulty-level::after {
+    content: '▼'; 
+    padding-left: 10px;
+    color: #fff;
+}
+
+#difficulty-level:hover {
+    background-color: #555;
+}
 
 .correct {
     background-color: green !important;
@@ -104,7 +138,6 @@ body {
 .flash-green {
     animation: flashGreen 0.5s 3;
 }
-
 
 @keyframes flashRed {
     0%, 100% { background-color: #444; }
@@ -127,9 +160,6 @@ body {
 
 
 .answer-btn .percentage {
-    position: absolute;
-    right: 10px;
-    top: 10px;
     font-size: 0.9em;
     color: #ffa500;
 }
@@ -141,11 +171,9 @@ body {
     margin-bottom: 20px;
 }
 
-
 .lifeline-wrapper {
     position: relative;
 }
-
 
 .lifeline-btn {
     width: 150px;
@@ -158,7 +186,6 @@ body {
 .lifeline-btn:hover {
     transform: scale(1.1);
 }
-
 
 .lifeline-used {
     position: absolute;
@@ -292,25 +319,6 @@ body {
 }
 
 
-#toggle-music {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #444;
-    color: #fff;
-    border: 2px solid silver;
-    border-radius: 10px;
-    cursor: pointer;
-    z-index: 1000;
-}
-
-#toggle-music:hover {
-    background-color: #555;
-}
-
-
 .next-question {
     display: none;
     padding: 10px 20px;
@@ -321,8 +329,8 @@ body {
     border-radius: 30px;
     cursor: pointer;
     z-index: 1000;
-    margin-top: 10px; 
-    margin-left: 270px;
+    margin-top: 20px;
+    margin-left: 280px;
 }
 
 .next-question:hover {
@@ -340,8 +348,11 @@ body {
     margin-bottom: 10px;
 }
 
-
 .start-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     padding: 10px 20px;
     font-size: 16px;
     background-color: #555;
@@ -350,7 +361,7 @@ body {
     border-radius: 30px;
     cursor: pointer;
     z-index: 1000;
-    margin-bottom: 20px; 
+    margin-top: 270px;
 }
 
 .start-button:hover {
