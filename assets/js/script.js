@@ -1,87 +1,10 @@
-const questions = [
-    {
-        question: "What is the capital of France?",
-        answers: ["Paris", "London", "Berlin", "Madrid"],
-        correct: "Paris"
-    },
-    {
-        question: "What is the largest planet in our solar system?",
-        answers: ["Mars", "Earth", "Jupiter", "Saturn"],
-        correct: "Jupiter"
-    },
-    {
-        question: "In what year did the Titanic sink?",
-        answers: ["1912", "1905", "1898", "1923"],
-        correct: "1912"
-    },
-    {
-        question: "Who wrote 'To Kill a Mockingbird'?",
-        answers: ["Harper Lee", "Mark Twain", "Ernest Hemingway", "F. Scott Fitzgerald"],
-        correct: "Harper Lee"
-    },
-    {
-        question: "What is the chemical symbol for gold?",
-        answers: ["Ag", "Au", "Pb", "Fe"],
-        correct: "Au"
-    },
-    {
-        question: "Who painted the Mona Lisa?",
-        answers: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Claude Monet"],
-        correct: "Leonardo da Vinci"
-    },
-    {
-        question: "What is the hardest natural substance on Earth?",
-        answers: ["Gold", "Iron", "Diamond", "Platinum"],
-        correct: "Diamond"
-    },
-    {
-        question: "What is the longest river in the world?",
-        answers: ["Amazon", "Nile", "Yangtze", "Mississippi"],
-        correct: "Nile"
-    },
-    {
-        question: "Who developed the theory of relativity?",
-        answers: ["Isaac Newton", "Albert Einstein", "Nikola Tesla", "Marie Curie"],
-        correct: "Albert Einstein"
-    },
-    {
-        question: "What is the smallest country in the world?",
-        answers: ["Monaco", "Nauru", "Vatican City", "San Marino"],
-        correct: "Vatican City"
-    },
-    {
-        question: "In what year did World War II end?",
-        answers: ["1945", "1939", "1942", "1946"],
-        correct: "1945"
-    },
-    {
-        question: "Which planet is known as the Red Planet?",
-        answers: ["Mars", "Venus", "Saturn", "Mercury"],
-        correct: "Mars"
-    },
-    {
-        question: "Who is the author of the Harry Potter series?",
-        answers: ["J.K. Rowling", "J.R.R. Tolkien", "George R.R. Martin", "Stephen King"],
-        correct: "J.K. Rowling"
-    },
-    {
-        question: "What is the main ingredient in traditional Japanese miso soup?",
-        answers: ["Tofu", "Miso paste", "Seaweed", "Soy sauce"],
-        correct: "Miso paste"
-    },
-    {
-        question: "Which element has the chemical symbol 'O'?",
-        answers: ["Oxygen", "Osmium", "Oganesson", "Osmate"],
-        correct: "Oxygen"
-    }
-];
-
 const prizeAmounts = [
     100, 200, 300, 500, 1000,
     2000, 4000, 8000, 16000, 32000,
     64000, 125000, 250000, 500000, 1000000
 ];
 
+let questions = [];
 let currentQuestionIndex = 0;
 let currentPrize = 0;
 let fiftyFiftyUsed = false;
@@ -91,13 +14,14 @@ let confettiInterval;
 let isMusicPlaying = false;
 let answerSelected = false;
 let gameStarted = false;
+let currentDifficulty = "easy";
 
-// Load sounds
+
 const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
 const wrongAnswerSound = new Audio('assets/sounds/wronganswers.mp3');
 const backgroundMusic = new Audio('assets/sounds/backgroundmusic.mp3');
-const startGameSound = new Audio('assets/sounds/startgame.mp3'); 
-const clappingSound = new Audio('assets/sounds/clapping.mp3'); 
+const startGameSound = new Audio('assets/sounds/startgame.mp3');
+const clappingSound = new Audio('assets/sounds/clapping.mp3');
 
 backgroundMusic.loop = true;
 
@@ -106,7 +30,7 @@ function toggleMusic() {
         backgroundMusic.pause();
         correctAnswerSound.muted = true;
         wrongAnswerSound.muted = true;
-        clappingSound.muted = true; 
+        clappingSound.muted = true;
         document.getElementById('toggle-music').textContent = "Turn Music On";
     } else {
         backgroundMusic.play().catch(error => {
@@ -114,7 +38,7 @@ function toggleMusic() {
         });
         correctAnswerSound.muted = false;
         wrongAnswerSound.muted = false;
-        clappingSound.muted = false; 
+        clappingSound.muted = false;
         document.getElementById('toggle-music').textContent = "Turn Music Off";
     }
     isMusicPlaying = !isMusicPlaying;
@@ -127,14 +51,31 @@ const friendSuggestionElement = document.getElementById('friend-suggestion');
 const overlayElement = document.getElementById('overlay');
 const winOverlayElement = document.getElementById('win-overlay');
 const timeoutOverlayElement = document.getElementById('timeout-overlay');
+const rulesOverlayElement = document.getElementById('rules-overlay');
 const finalPrizeElement = document.getElementById('final-prize');
 const confettiContainer = document.getElementById('confetti-container');
 const startButton = document.getElementById('start-button');
 const nextQuestionButton = document.getElementById('next-question');
 const timerElement = document.getElementById('timer');
+const difficultySelect = document.getElementById('difficulty-level');
 
 let timerInterval;
 let timeLeft = 30;
+
+async function fetchQuestions() {
+    const apiUrl = `https://opentdb.com/api.php?amount=15&difficulty=${currentDifficulty}&type=multiple`;
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        questions = data.results.map(item => ({
+            question: item.question,
+            answers: [...item.incorrect_answers, item.correct_answer].sort(() => Math.random() - 0.5),
+            correct: item.correct_answer
+        }));
+    } catch (error) {
+        console.error("Error fetching questions: ", error);
+    }
+}
 
 function startTimer() {
     clearInterval(timerInterval);
@@ -171,9 +112,9 @@ function resetGame() {
     hideOverlay();
     hideTimeoutOverlay();
     hideWinOverlay();
+    hideRulesOverlay();
     clearConfetti();
     if (confettiInterval) clearInterval(confettiInterval);
-    document.getElementById('toggle-music').textContent = "Turn Music On";
     gameStarted = false;
     answerSelected = false;
     resetAnswerButtonBackgrounds();
@@ -182,18 +123,22 @@ function resetGame() {
     nextQuestionButton.style.display = 'none';
     disableAnswerButtons();
     startButton.style.display = 'block';
+    difficultySelect.disabled = false;
+    fetchQuestions(); 
 }
 
 function startGame() {
     gameStarted = true;
     startButton.style.display = 'none';
+    difficultySelect.disabled = true;
     if (isMusicPlaying) {
-        startGameSound.play(); 
+        startGameSound.play();
     }
     showQuestion(questions[currentQuestionIndex]);
     highlightCurrentPrize(true);
-    enableAnswerButtons(); 
-    startTimer(); 
+    enableAnswerButtons();
+    enableLifelines();
+    startTimer();
 }
 
 function resetAnswerButtonBackgrounds() {
@@ -204,24 +149,22 @@ function resetAnswerButtonBackgrounds() {
 }
 
 function adjustQuestionFontSize(text) {
-    const maxLength = 100;
-    const baseFontSize = 1.5;
-    const minFontSize = 1.0;
+    const questionContainer = document.querySelector('.question-container');
+    const maxHeight = questionContainer.clientHeight - 20; 
+    const maxWidth = questionContainer.clientWidth - 20; 
+    let fontSize = 32; 
+    questionElement.style.fontSize = `${fontSize}px`;
+    questionElement.innerHTML = text;
 
-    const length = text.length;
-    let fontSize = baseFontSize;
-
-    if (length > maxLength) {
-        fontSize = Math.max(minFontSize, baseFontSize - (length - maxLength) * 0.01);
+    while (questionElement.scrollHeight > maxHeight || questionElement.scrollWidth > maxWidth) {
+        fontSize -= 1;
+        questionElement.style.fontSize = `${fontSize}px`;
     }
-
-    questionElement.style.fontSize = `${fontSize}em`;
 }
 
 function showQuestion(question) {
     resetAnswerButtonBackgrounds();
     resetTimer();
-    questionElement.textContent = question.question;
     adjustQuestionFontSize(question.question);
 
     const answerLabels = ["A.", "B.", "C.", "D."];
@@ -256,8 +199,8 @@ function selectAnswer(selected, correct, button) {
     answerSelected = true;
     clearInterval(timerInterval);
     if (selected === correct) {
-        playSound(correctAnswerSound, 5000); 
-        if (isMusicPlaying) {
+        playSound(correctAnswerSound, 5000);
+        if (currentQuestionIndex === 14 && isMusicPlaying) {
             clappingSound.play(); 
         }
         flashCorrectAnswer(button, () => {
@@ -267,9 +210,9 @@ function selectAnswer(selected, correct, button) {
                 setTimeout(() => {
                     nextQuestionButton.style.display = 'block';
                     nextQuestionButton.textContent = 'Next Question';
-                }, 1800); 
+                }, 1800);
             } else {
-                setTimeout(showWinOverlay, 1800); 
+                setTimeout(showWinOverlay, 1800);
             }
         });
     } else {
@@ -298,9 +241,9 @@ function flashWrongAnswer(button, correctAnswer) {
             setTimeout(() => {
                 correctButton.classList.remove('flash-green');
                 correctButton.classList.add('correct');
-                setTimeout(showOverlay, 2000); 
+                setTimeout(showOverlay, 2000);
             }, 1500);
-        }, 2000); 
+        }, 2000);
     }, 1500);
 }
 
@@ -327,12 +270,14 @@ function highlightCurrentPrize(initial = false) {
                 item.classList.remove('flash-orange');
                 item.classList.add('highlight');
             }, 1500);
+        } else if (index === 14 - currentQuestionIndex && initial) {
+            item.classList.add('highlight');
         }
     });
 }
 
 function useFiftyFifty() {
-    if (fiftyFiftyUsed) return;
+    if (!gameStarted || fiftyFiftyUsed) return;
     fiftyFiftyUsed = true;
     showLifelineUsed('fifty-fifty-used');
 
@@ -351,7 +296,7 @@ function useFiftyFifty() {
 }
 
 function askTheAudience() {
-    if (askTheAudienceUsed) return;
+    if (!gameStarted || askTheAudienceUsed) return;
     askTheAudienceUsed = true;
     showLifelineUsed('ask-the-audience-used');
 
@@ -360,11 +305,10 @@ function askTheAudience() {
     const answerPercentages = generatePercentages(question.answers, correctAnswer);
 
     answerButtons.forEach(button => {
-        const percentage = answerPercentages[button.getAttribute('data-answer')];
-        const percentageSpan = document.createElement('span');
-        percentageSpan.className = 'percentage';
-        percentageSpan.textContent = ` (${percentage}%)`;
-        button.appendChild(percentageSpan);
+        const answer = button.getAttribute('data-answer');
+        if (answerPercentages[answer]) {
+            button.innerHTML += ` <span class="percentage">(${answerPercentages[answer]}%)</span>`;
+        }
     });
 }
 
@@ -394,7 +338,7 @@ function generatePercentages(answers, correctAnswer) {
 }
 
 function phoneAFriend() {
-    if (phoneAFriendUsed) return;
+    if (!gameStarted || phoneAFriendUsed) return;
     phoneAFriendUsed = true;
     showLifelineUsed('phone-a-friend-used');
 
@@ -479,6 +423,14 @@ function hideWinOverlay() {
     winOverlayElement.style.display = "none";
 }
 
+function showRules() {
+    rulesOverlayElement.style.display = "flex";
+}
+
+function hideRules() {
+    rulesOverlayElement.style.display = "none";
+}
+
 function createConfetti() {
     clearConfetti();
     const confettiItems = [
@@ -525,6 +477,16 @@ function playSound(sound, duration) {
     }
 }
 
+function changeDifficulty() {
+    currentDifficulty = difficultySelect.value;
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchQuestions();
+});
+
+
 startButton.onclick = () => {
     startGame();
 };
@@ -533,6 +495,16 @@ nextQuestionButton.onclick = () => {
     nextQuestion();
 };
 
+document.getElementById('rules-button').onclick = () => {
+    showRules();
+};
+
+document.getElementById('close-rules-button').onclick = () => {
+    hideRules();
+};
+
 document.querySelectorAll('.overlay button').forEach(button => {
-    button.onclick = resetGame; 
+    button.onclick = () => {
+        resetGame();
+    };
 });
