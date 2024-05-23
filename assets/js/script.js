@@ -14,7 +14,7 @@ let confettiInterval;
 let isMusicPlaying = false;
 let answerSelected = false;
 let gameStarted = false;
-let currentDifficulty = "easy";
+let currentDifficulty = "easy"; 
 
 
 const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
@@ -66,6 +66,9 @@ async function fetchQuestions() {
     const apiUrl = `https://opentdb.com/api.php?amount=15&difficulty=${currentDifficulty}&type=multiple`;
     try {
         const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
         questions = data.results.map(item => ({
             question: item.question,
@@ -74,6 +77,8 @@ async function fetchQuestions() {
         }));
     } catch (error) {
         console.error("Error fetching questions: ", error);
+        
+        questionElement.textContent = 'Failed to load questions. Please try again later.';
     }
 }
 
@@ -109,10 +114,7 @@ function resetGame() {
     askTheAudienceUsed = false;
     phoneAFriendUsed = false;
     friendSuggestionElement.textContent = '';
-    hideOverlay();
-    hideTimeoutOverlay();
-    hideWinOverlay();
-    hideRulesOverlay();
+    hideAllOverlays();
     clearConfetti();
     if (confettiInterval) clearInterval(confettiInterval);
     gameStarted = false;
@@ -120,11 +122,21 @@ function resetGame() {
     resetAnswerButtonBackgrounds();
     resetLifelineIcons();
     resetTimer();
+    clearQuestionAndAnswers();
     nextQuestionButton.style.display = 'none';
     disableAnswerButtons();
     startButton.style.display = 'block';
     difficultySelect.disabled = false;
-    fetchQuestions(); 
+    fetchQuestions();
+    resetPrizeHighlight();
+}
+
+function clearQuestionAndAnswers() {
+    questionElement.textContent = 'Question will appear here';
+    answerButtons.forEach((button, index) => {
+        button.textContent = `Answer ${String.fromCharCode(65 + index)}`;
+        button.style.display = 'block';
+    });
 }
 
 function startGame() {
@@ -135,7 +147,6 @@ function startGame() {
         startGameSound.play();
     }
     showQuestion(questions[currentQuestionIndex]);
-    highlightCurrentPrize(true);
     enableAnswerButtons();
     enableLifelines();
     startTimer();
@@ -150,9 +161,9 @@ function resetAnswerButtonBackgrounds() {
 
 function adjustQuestionFontSize(text) {
     const questionContainer = document.querySelector('.question-container');
-    const maxHeight = questionContainer.clientHeight - 20; 
-    const maxWidth = questionContainer.clientWidth - 20; 
-    let fontSize = 32; 
+    const maxHeight = questionContainer.clientHeight - 20;
+    const maxWidth = questionContainer.clientWidth - 20;
+    let fontSize = 32;
     questionElement.style.fontSize = `${fontSize}px`;
     questionElement.innerHTML = text;
 
@@ -201,7 +212,7 @@ function selectAnswer(selected, correct, button) {
     if (selected === correct) {
         playSound(correctAnswerSound, 5000);
         if (currentQuestionIndex === 14 && isMusicPlaying) {
-            clappingSound.play(); 
+            clappingSound.play();
         }
         flashCorrectAnswer(button, () => {
             currentPrize = prizeAmounts[currentQuestionIndex];
@@ -261,17 +272,21 @@ function nextQuestion() {
     }
 }
 
-function highlightCurrentPrize(initial = false) {
+function resetPrizeHighlight() {
+    prizeListItems.forEach((item) => {
+        item.classList.remove('highlight', 'flash-orange');
+    });
+}
+
+function highlightCurrentPrize() {
     prizeListItems.forEach((item, index) => {
         item.classList.remove('highlight', 'flash-orange');
-        if (index === 14 - currentQuestionIndex && !initial) {
+        if (index === 14 - currentQuestionIndex) {
             item.classList.add('flash-orange');
             setTimeout(() => {
                 item.classList.remove('flash-orange');
                 item.classList.add('highlight');
             }, 1500);
-        } else if (index === 14 - currentQuestionIndex && initial) {
-            item.classList.add('highlight');
         }
     });
 }
@@ -431,6 +446,13 @@ function hideRules() {
     rulesOverlayElement.style.display = "none";
 }
 
+function hideAllOverlays() {
+    hideOverlay();
+    hideWinOverlay();
+    hideTimeoutOverlay();
+    hideRules();
+}
+
 function createConfetti() {
     clearConfetti();
     const confettiItems = [
@@ -471,7 +493,7 @@ function playSound(sound, duration) {
         if (duration) {
             setTimeout(() => {
                 sound.pause();
-                sound.currentTime = 0;
+                sound.currentTime = 0; 
             }, duration);
         }
     }
@@ -494,6 +516,7 @@ startButton.onclick = () => {
 nextQuestionButton.onclick = () => {
     nextQuestion();
 };
+
 
 document.getElementById('rules-button').onclick = () => {
     showRules();
