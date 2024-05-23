@@ -96,6 +96,8 @@ let gameStarted = false;
 const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
 const wrongAnswerSound = new Audio('assets/sounds/wronganswers.mp3');
 const backgroundMusic = new Audio('assets/sounds/backgroundmusic.mp3');
+const startGameSound = new Audio('assets/sounds/startgame.mp3'); 
+const clappingSound = new Audio('assets/sounds/clapping.mp3'); 
 
 backgroundMusic.loop = true;
 
@@ -104,6 +106,7 @@ function toggleMusic() {
         backgroundMusic.pause();
         correctAnswerSound.muted = true;
         wrongAnswerSound.muted = true;
+        clappingSound.muted = true; 
         document.getElementById('toggle-music').textContent = "Turn Music On";
     } else {
         backgroundMusic.play().catch(error => {
@@ -111,6 +114,7 @@ function toggleMusic() {
         });
         correctAnswerSound.muted = false;
         wrongAnswerSound.muted = false;
+        clappingSound.muted = false; 
         document.getElementById('toggle-music').textContent = "Turn Music Off";
     }
     isMusicPlaying = !isMusicPlaying;
@@ -183,10 +187,13 @@ function resetGame() {
 function startGame() {
     gameStarted = true;
     startButton.style.display = 'none';
+    if (isMusicPlaying) {
+        startGameSound.play(); 
+    }
     showQuestion(questions[currentQuestionIndex]);
     highlightCurrentPrize(true);
-    enableAnswerButtons();
-    startTimer();
+    enableAnswerButtons(); 
+    startTimer(); 
 }
 
 function resetAnswerButtonBackgrounds() {
@@ -249,7 +256,10 @@ function selectAnswer(selected, correct, button) {
     answerSelected = true;
     clearInterval(timerInterval);
     if (selected === correct) {
-        playSound(correctAnswerSound, 5000);
+        playSound(correctAnswerSound, 5000); 
+        if (isMusicPlaying) {
+            clappingSound.play(); 
+        }
         flashCorrectAnswer(button, () => {
             currentPrize = prizeAmounts[currentQuestionIndex];
             highlightCurrentPrize();
@@ -257,9 +267,9 @@ function selectAnswer(selected, correct, button) {
                 setTimeout(() => {
                     nextQuestionButton.style.display = 'block';
                     nextQuestionButton.textContent = 'Next Question';
-                }, 1800);
+                }, 1800); 
             } else {
-                setTimeout(showWinOverlay, 1800);
+                setTimeout(showWinOverlay, 1800); 
             }
         });
     } else {
@@ -288,7 +298,7 @@ function flashWrongAnswer(button, correctAnswer) {
             setTimeout(() => {
                 correctButton.classList.remove('flash-green');
                 correctButton.classList.add('correct');
-                setTimeout(showOverlay, 2000);
+                setTimeout(showOverlay, 2000); 
             }, 1500);
         }, 2000); 
     }, 1500);
@@ -472,14 +482,19 @@ function hideWinOverlay() {
 function createConfetti() {
     clearConfetti();
     const confettiItems = [
-        "🎉", "🎊", "💵", "💰", "🎈", "🎁", "👏", "🥳", "😁", "😃", "😄"
+        "🎉", "🎊", "💵", "💰", "🎈", "🎁", "👏", "🥳", "😁", "😃", "😄", "🎇", "🎆", "🌟", "✨"
     ];
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 500; i++) {
         const confetti = document.createElement('div');
         confetti.classList.add('confetti');
         confetti.style.left = `${Math.random() * 100}%`;
         confetti.style.top = `${Math.random() * 100 - 50}px`;
-        confetti.textContent = confettiItems[Math.floor(Math.random() * confettiItems.length)];
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        if (Math.random() > 0.5) {
+            confetti.style.backgroundColor = getRandomColor();
+        } else {
+            confetti.textContent = confettiItems[Math.floor(Math.random() * confettiItems.length)];
+        }
         confettiContainer.appendChild(confetti);
     }
 }
@@ -509,6 +524,7 @@ function playSound(sound, duration) {
         }
     }
 }
+
 startButton.onclick = () => {
     startGame();
 };
