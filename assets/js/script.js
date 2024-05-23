@@ -16,7 +16,6 @@ let answerSelected = false;
 let gameStarted = false;
 let currentDifficulty = "easy"; 
 
-
 const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
 const wrongAnswerSound = new Audio('assets/sounds/wronganswers.mp3');
 const backgroundMusic = new Audio('assets/sounds/backgroundmusic.mp3');
@@ -78,7 +77,7 @@ async function fetchQuestions() {
     } catch (error) {
         console.error("Error fetching questions: ", error);
         
-        questionElement.textContent = 'Failed to load questions. Please try again later.';
+        questionElement.textContent = 'Failed to load questions. Refresh this page or Please try again later.';
     }
 }
 
@@ -508,7 +507,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchQuestions();
 });
 
-
 startButton.onclick = () => {
     startGame();
 };
@@ -516,7 +514,6 @@ startButton.onclick = () => {
 nextQuestionButton.onclick = () => {
     nextQuestion();
 };
-
 
 document.getElementById('rules-button').onclick = () => {
     showRules();
@@ -527,7 +524,15 @@ document.getElementById('close-rules-button').onclick = () => {
 };
 
 document.querySelectorAll('.overlay button').forEach(button => {
-    button.onclick = () => {
-        resetGame();
+    button.onclick = (event) => {
+        if (event.target.closest('#rules-overlay')) {
+            hideRules();
+        } else {
+            resetGame();
+        }
     };
 });
+
+function hideRules() {
+    rulesOverlayElement.style.display = "none";
+}

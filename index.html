@@ -8,13 +8,14 @@
 </head>
 <body>
     <div class="header">
-        <button id="toggle-music" onclick="toggleMusic()">Turn Music Off</button>
+        <button id="rules-button">Rules</button>
+        
         <select id="difficulty-level" onchange="changeDifficulty()">
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
         </select>
-        <button id="rules-button">Rules</button>
+        <button id="toggle-music" onclick="toggleMusic()">Turn Music Off</button>
     </div>
     <div class="logo-container">
         <img src="assets/images/kisspng-millionaire-nigeria-game-show-television-show-quiz-5b32fa6c16cf28.9887978915300675640934.png" alt="Who Wants to Be a Millionaire Logo" class="logo">
@@ -95,9 +96,10 @@
     <div id="rules-overlay" class="overlay">
         <div class="overlay-content">
             <h2>Game Rules</h2>
-            <p>1. Answer the questions correctly to win the prize.</p>
-            <p>2. Use lifelines to help answer difficult questions.</p>
-            <p>3. You have 30 seconds to answer each question.</p>
+            <p>1. Choose difficulty.</p> 
+            <p>2. Answer the questions correctly to win the prize.</p>
+            <p>3. Use lifelines to help answer difficult questions.</p>
+            <p>4. You have 30 seconds to answer each question.</p>
             <button id="close-rules-button" onclick="hideRules()">Close</button>
         </div>
     </div>
