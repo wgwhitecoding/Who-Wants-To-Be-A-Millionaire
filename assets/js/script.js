@@ -88,11 +88,32 @@ let fiftyFiftyUsed = false;
 let askTheAudienceUsed = false;
 let phoneAFriendUsed = false;
 let confettiInterval;
+let isMusicPlaying = true;
+let answerSelected = false;
 
 
 const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
 const wrongAnswerSound = new Audio('assets/sounds/wronganswers.mp3');
 const backgroundMusic = new Audio('assets/sounds/backgroundmusic.mp3');
+
+backgroundMusic.loop = true;
+
+function toggleMusic() {
+    if (isMusicPlaying) {
+        backgroundMusic.pause();
+        correctAnswerSound.muted = true;
+        wrongAnswerSound.muted = true;
+        document.getElementById('toggle-music').textContent = "Turn Music On";
+    } else {
+        backgroundMusic.play().catch(error => {
+            console.error("Music play error: ", error);
+        });
+        correctAnswerSound.muted = false;
+        wrongAnswerSound.muted = false;
+        document.getElementById('toggle-music').textContent = "Turn Music Off";
+    }
+    isMusicPlaying = !isMusicPlaying;
+}
 
 const questionElement = document.getElementById('question');
 const answerButtons = document.querySelectorAll('.answer-btn');
