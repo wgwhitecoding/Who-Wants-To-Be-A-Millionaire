@@ -92,7 +92,7 @@ let isMusicPlaying = false;
 let answerSelected = false;
 let gameStarted = false;
 
-
+// Load sounds
 const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
 const wrongAnswerSound = new Audio('assets/sounds/wronganswers.mp3');
 const backgroundMusic = new Audio('assets/sounds/backgroundmusic.mp3');
@@ -122,6 +122,7 @@ const prizeListItems = document.querySelectorAll('#prize-list li');
 const friendSuggestionElement = document.getElementById('friend-suggestion');
 const overlayElement = document.getElementById('overlay');
 const winOverlayElement = document.getElementById('win-overlay');
+const timeoutOverlayElement = document.getElementById('timeout-overlay');
 const finalPrizeElement = document.getElementById('final-prize');
 const confettiContainer = document.getElementById('confetti-container');
 const startButton = document.getElementById('start-button');
@@ -148,7 +149,7 @@ function updateTimer() {
 }
 
 function handleTimeOut() {
-    showOverlay();
+    showTimeoutOverlay();
 }
 
 function resetTimer() {
@@ -156,7 +157,7 @@ function resetTimer() {
     timerElement.textContent = "30";
 }
 
-function startGame() {
+function resetGame() {
     currentQuestionIndex = 0;
     currentPrize = 0;
     fiftyFiftyUsed = false;
@@ -164,17 +165,28 @@ function startGame() {
     phoneAFriendUsed = false;
     friendSuggestionElement.textContent = '';
     hideOverlay();
+    hideTimeoutOverlay();
     hideWinOverlay();
     clearConfetti();
     if (confettiInterval) clearInterval(confettiInterval);
     document.getElementById('toggle-music').textContent = "Turn Music On";
+    gameStarted = false;
+    answerSelected = false;
+    resetAnswerButtonBackgrounds();
+    resetLifelineIcons();
+    resetTimer();
+    nextQuestionButton.style.display = 'none';
+    disableAnswerButtons();
+    startButton.style.display = 'block';
+}
+
+function startGame() {
     gameStarted = true;
+    startButton.style.display = 'none'; 
     showQuestion(questions[currentQuestionIndex]);
     highlightCurrentPrize(true);
-    resetLifelineIcons();
-    startButton.style.display = 'none';
-    nextQuestionButton.style.display = 'none';
-    answerSelected = false;
+    enableAnswerButtons(); 
+    startTimer(); 
 }
 
 function resetAnswerButtonBackgrounds() {
@@ -202,9 +214,6 @@ function adjustQuestionFontSize(text) {
 function showQuestion(question) {
     resetAnswerButtonBackgrounds();
     resetTimer();
-    if (gameStarted) {
-        startTimer();
-    }
     questionElement.textContent = question.question;
     adjustQuestionFontSize(question.question);
 
@@ -410,12 +419,32 @@ function enableLifelines() {
     if (!askTheAudienceUsed) document.getElementById('ask-the-audience').style.pointerEvents = 'auto';
 }
 
+function enableAnswerButtons() {
+    answerButtons.forEach(button => {
+        button.style.pointerEvents = 'auto';
+    });
+}
+
+function disableAnswerButtons() {
+    answerButtons.forEach(button => {
+        button.style.pointerEvents = 'none';
+    });
+}
+
 function showOverlay() {
     overlayElement.style.display = "flex";
 }
 
 function hideOverlay() {
     overlayElement.style.display = "none";
+}
+
+function showTimeoutOverlay() {
+    timeoutOverlayElement.style.display = "flex";
+}
+
+function hideTimeoutOverlay() {
+    timeoutOverlayElement.style.display = "none";
 }
 
 function showWinOverlay() {
@@ -460,10 +489,17 @@ function playSound(sound) {
     }
 }
 
+
 startButton.onclick = () => {
     startGame();
 };
 
+
 nextQuestionButton.onclick = () => {
     nextQuestion();
 };
+
+
+document.querySelectorAll('.overlay button').forEach(button => {
+    button.onclick = resetGame;
+});

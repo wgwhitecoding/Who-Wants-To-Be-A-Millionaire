@@ -37,9 +37,9 @@
                 </div>
             </div>
             <div id="friend-suggestion" class="friend-suggestion">
-                
+        
             </div>
-            <button id="start-button" class="start-button" onclick="startGame()">Start Game</button> 
+            <button id="start-button" class="start-button" onclick="startGame()">Start Game</button>
             <button id="next-question" class="next-question" onclick="nextQuestion()">Next Question</button>
         </div>
         <div class="prize-list-container">
@@ -74,6 +74,13 @@
             <h2>Congratulations! 🎉🎊</h2>
             <p>You won £1,000,000!</p>
             <button onclick="startGame()">Play Again</button>
+        </div>
+    </div>
+    <div id="timeout-overlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Time's Out! ⏰</h2>
+            <p>You ran out of time. Try again!</p>
+            <button onclick="startGame()">Try Again</button>
         </div>
     </div>
     <div id="confetti-container"></div>
