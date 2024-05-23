@@ -122,9 +122,7 @@ const friendSuggestionElement = document.getElementById('friend-suggestion');
 const overlayElement = document.getElementById('overlay');
 const winOverlayElement = document.getElementById('win-overlay');
 const finalPrizeElement = document.getElementById('final-prize');
-const confettiContainer = document.getElementById('confetti-container');
-
-backgroundMusic.loop = true; // Loop background music
+const nextQuestionButton = document.getElementById('next-question');
 
 function startGame() {
     currentQuestionIndex = 0;
@@ -132,16 +130,44 @@ function startGame() {
     fiftyFiftyUsed = false;
     askTheAudienceUsed = false;
     phoneAFriendUsed = false;
-    friendSuggestionElement.textContent = ''; 
-    hideOverlay(); 
+    friendSuggestionElement.textContent = '';
+    hideOverlay();
     hideWinOverlay();
     clearConfetti(); 
     if (confettiInterval) clearInterval(confettiInterval); 
-    backgroundMusic.play(); 
+    if (isMusicPlaying) {
+        backgroundMusic.play().catch(error => {
+            console.error("Music play error: ", error);
+        });
+    }
     showQuestion(questions[currentQuestionIndex]);
     highlightCurrentPrize();
+    resetLifelineIcons();
+    nextQuestionButton.style.display = 'none';
+    answerSelected = false;
 }
 
+function resetAnswerButtonBackgrounds() {
+    answerButtons.forEach(button => {
+        button.classList.remove('correct', 'wrong', 'flash-green', 'flash-red');
+        button.style.backgroundColor = '';
+    });
+}
+
+function adjustQuestionFontSize(text) {
+    const maxLength = 100; 
+    const baseFontSize = 1.5; 
+    const minFontSize = 1.0; 
+
+    const length = text.length;
+    let fontSize = baseFontSize;
+
+    if (length > maxLength) {
+        fontSize = Math.max(minFontSize, baseFontSize - (length - maxLength) * 0.01);
+    }
+
+    questionElement.style.fontSize = `${fontSize}em`;
+}
 function showQuestion(question) {
     questionElement.textContent = question.question;
     answerButtons.forEach((button, index) => {
