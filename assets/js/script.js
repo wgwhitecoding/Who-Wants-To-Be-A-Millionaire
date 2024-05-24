@@ -126,7 +126,7 @@ function resetGame() {
     disableAnswerButtons();
     startButton.style.display = 'block';
     difficultySelect.disabled = false;
-    fetchQuestions();
+    fetchQuestions(); 
     resetPrizeHighlight();
 }
 
@@ -160,9 +160,9 @@ function resetAnswerButtonBackgrounds() {
 
 function adjustQuestionFontSize(text) {
     const questionContainer = document.querySelector('.question-container');
-    const maxHeight = questionContainer.clientHeight - 20;
-    const maxWidth = questionContainer.clientWidth - 20;
-    let fontSize = 32;
+    const maxHeight = questionContainer.clientHeight - 20; 
+    const maxWidth = questionContainer.clientWidth - 20; 
+    let fontSize = 32; 
     questionElement.style.fontSize = `${fontSize}px`;
     questionElement.innerHTML = text;
 
@@ -211,7 +211,7 @@ function selectAnswer(selected, correct, button) {
     if (selected === correct) {
         playSound(correctAnswerSound, 5000);
         if (currentQuestionIndex === 14 && isMusicPlaying) {
-            clappingSound.play();
+            clappingSound.play(); 
         }
         flashCorrectAnswer(button, () => {
             currentPrize = prizeAmounts[currentQuestionIndex];
@@ -501,7 +501,6 @@ function playSound(sound, duration) {
 function changeDifficulty() {
     currentDifficulty = difficultySelect.value;
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchQuestions();

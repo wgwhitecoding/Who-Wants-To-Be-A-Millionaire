@@ -22,54 +22,56 @@
     </div>
     <div class="game-wrapper">
         <div class="game-container">
-            <div id="timer" class="timer">30</div>
-            <div class="question-container">
-                <h2 id="question">Question will appear here</h2>
-            </div>
-            <div class="answers-container">
-                <button class="answer-btn" id="answer1">Answer A</button>
-                <button class="answer-btn" id="answer2">Answer B</button>
-                <button class="answer-btn" id="answer3">Answer C</button>
-                <button class="answer-btn" id="answer4">Answer D</button>
-            </div>
-            <div class="lifelines-container">
-                <div class="lifeline-wrapper">
-                    <img src="assets/images/Who Wants To Be A Millionaire_5050.png" alt="50:50" class="lifeline-btn" id="fifty-fifty" onclick="useFiftyFifty()">
-                    <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="fifty-fifty-used">
+            <div class="game-content">
+                <div id="timer" class="timer">30</div>
+                <div class="question-container">
+                    <h2 id="question">Welcome to Who Wants to be a Millionaire!</h2>
                 </div>
-                <div class="lifeline-wrapper">
-                    <img src="assets/images/Who Wants To Be A Millionaire_Phone.png" alt="Phone a Friend" class="lifeline-btn" id="phone-a-friend" onclick="phoneAFriend()">
-                    <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="phone-a-friend-used">
+                <div class="answers-container">
+                    <button class="answer-btn" id="answer1">Answer A</button>
+                    <button class="answer-btn" id="answer2">Answer B</button>
+                    <button class="answer-btn" id="answer3">Answer C</button>
+                    <button class="answer-btn" id="answer4">Answer D</button>
                 </div>
-                <div class="lifeline-wrapper">
-                    <img src="assets/images/Who Wants To Be A Millionaire_Audience.png" alt="Ask the Audience" class="lifeline-btn" id="ask-the-audience" onclick="askTheAudience()">
-                    <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="ask-the-audience-used">
+                <div class="lifelines-container">
+                    <div class="lifeline-wrapper">
+                        <img src="assets/images/Who Wants To Be A Millionaire_5050.png" alt="50:50" class="lifeline-btn" id="fifty-fifty" onclick="useFiftyFifty()">
+                        <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="fifty-fifty-used">
+                    </div>
+                    <div class="lifeline-wrapper">
+                        <img src="assets/images/Who Wants To Be A Millionaire_Phone.png" alt="Phone a Friend" class="lifeline-btn" id="phone-a-friend" onclick="phoneAFriend()">
+                        <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="phone-a-friend-used">
+                    </div>
+                    <div class="lifeline-wrapper">
+                        <img src="assets/images/Who Wants To Be A Millionaire_Audience.png" alt="Ask the Audience" class="lifeline-btn" id="ask-the-audience" onclick="askTheAudience()">
+                        <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="ask-the-audience-used">
+                    </div>
                 </div>
+                <div id="friend-suggestion" class="friend-suggestion">
+                   
+                </div>
+                <button id="start-button" class="start-button" onclick="startGame()">Start Game</button>
+                <button id="next-question" class="next-question" onclick="nextQuestion()">Next Question</button>
             </div>
-            <div id="friend-suggestion" class="friend-suggestion">
-                
+            <div class="prize-list-container">
+                <ul id="prize-list">
+                    <li id="prize-15">£1 MILIION</li>
+                    <li id="prize-14">£500,000</li>
+                    <li id="prize-13">£250,000</li>
+                    <li id="prize-12">£125,000</li>
+                    <li id="prize-11">£64,000</li>
+                    <li id="prize-10">£32,000</li>
+                    <li id="prize-9">£16,000</li>
+                    <li id="prize-8">£8,000</li>
+                    <li id="prize-7">£4,000</li>
+                    <li id="prize-6">£2,000</li>
+                    <li id="prize-5">£1,000</li>
+                    <li id="prize-4">£500</li>
+                    <li id="prize-3">£300</li>
+                    <li id="prize-2">£200</li>
+                    <li id="prize-1">£100</li>
+                </ul>
             </div>
-            <button id="start-button" class="start-button" onclick="startGame()">Start Game</button>
-            <button id="next-question" class="next-question" onclick="nextQuestion()">Next Question</button>
-        </div>
-        <div class="prize-list-container">
-            <ul id="prize-list">
-                <li id="prize-15">£1 MILIION</li>
-                <li id="prize-14">£500,000</li>
-                <li id="prize-13">£250,000</li>
-                <li id="prize-12">£125,000</li>
-                <li id="prize-11">£64,000</li>
-                <li id="prize-10">£32,000</li>
-                <li id="prize-9">£16,000</li>
-                <li id="prize-8">£8,000</li>
-                <li id="prize-7">£4,000</li>
-                <li id="prize-6">£2,000</li>
-                <li id="prize-5">£1,000</li>
-                <li id="prize-4">£500</li>
-                <li id="prize-3">£300</li>
-                <li id="prize-2">£200</li>
-                <li id="prize-1">£100</li>
-            </ul>
         </div>
     </div>
     <div id="overlay" class="overlay">
