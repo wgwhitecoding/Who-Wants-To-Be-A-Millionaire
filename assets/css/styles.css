@@ -428,7 +428,7 @@ body {
     width: 100%;
     transition: width 1s linear;
     width: 110%;
-    border: 3px solid silver;
+   
     border-radius: 30px;
 }
 
