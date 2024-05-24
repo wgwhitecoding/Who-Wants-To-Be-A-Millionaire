@@ -18,7 +18,6 @@ let currentDifficulty = "easy";
 
 const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
 const wrongAnswerSound = new Audio('assets/sounds/wronganswer.mp3');
-const wrongAnswerImmediateSound = new Audio('assets/sounds/wronganswerimmediate.mp3');
 const awwwwSound = new Audio('assets/sounds/awwww.mp3');
 const backgroundMusic = new Audio('assets/sounds/backgroundmusic.mp3');
 const startGameSound = new Audio('assets/sounds/startgame.mp3');
