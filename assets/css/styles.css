@@ -5,7 +5,7 @@ body {
     background-size: cover;
     color: #fff;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     height: 100vh;
     margin: 0;
@@ -43,11 +43,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    position: relative; 
+    position: relative;
     width: 90%;
     max-width: 1200px;
-    margin-top: 120px; 
+    margin-top: 120px;
 }
+
 
 .game-container {
     background-color: rgba(0, 0, 0, 0.8);
@@ -57,9 +58,10 @@ body {
     text-align: center;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: flex-start; 
 }
+
 
 .game-content {
     flex: 2; 
@@ -84,13 +86,16 @@ body {
 }
 
 #prize-list li {
-    background-color: #444;
+    background-color: #3f1a51;
     padding: 10px;
     margin-bottom: 5px;
     font-size: 1.1em;
     border-radius: 5px;
     transition: background-color 0.3s;
     color: orange;
+    border: 3px solid silver;
+    border-radius: 30px;
+    height: 18px;
 }
 
 #prize-list #prize-15,
@@ -109,7 +114,7 @@ body {
 .question-container {
     margin-bottom: 40px;
     padding: 10px;
-    background-color: #222;
+    background-color: #444;
     border-radius: 30px;
     font-size: 1.5em;
     border: 3px solid silver;
@@ -150,7 +155,7 @@ body {
     width: 105%;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #444;
+    background-color:#444;
     color: #fff;
     border: 3px solid silver;
     border-radius: 30px;
@@ -168,7 +173,7 @@ body {
 
 #difficulty-level {
     appearance: none; 
-    background-color: #444;
+    background-color: #444;;
     color: #fff;
     padding: 10px 20px;
     font-size: 16px;
@@ -248,7 +253,7 @@ body {
     justify-content: space-around;
     margin-bottom: 20px;
     width: 100%; 
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 
@@ -269,6 +274,7 @@ body {
     transform: scale(1.1);
 }
 
+
 .lifeline-used {
     position: absolute;
     top: 0;
@@ -279,12 +285,13 @@ body {
     display: none;
 }
 
+
 .friend-suggestion {
     background-color: #222;
     padding: 10px;
     border-radius: 10px;
     margin-top: 20px;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
     font-size: 1.2em;
     color: #ffa500;
     width: 100%;
@@ -371,12 +378,12 @@ body {
 
 .next-question {
     position: absolute;
-    top: 690px;
+    top: 690px; 
     left: 32%; 
     transform: translateX(-50%);
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #555;
+    background-color: #5f476a;
     color: #fff;
     border: 3px solid silver;
     border-radius: 30px;
@@ -392,12 +399,12 @@ body {
 
 .start-button {
     position: absolute;
-    top: 690px;
-    left: 32%;
+    top: 690px; 
+    left: 32%; 
     transform: translateX(-50%);
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #555;
+    background-color:#5f476a;
     color: #fff;
     border: 3px solid silver;
     border-radius: 30px;
@@ -410,7 +417,6 @@ body {
     background-color: #ffa500;
 }
 
-
 .timer {
     font-size: 2em;
     color: #fff;
@@ -421,4 +427,6 @@ body {
     margin-bottom: 40px;
     width: 100%;
     margin-top: 20px;
+    border: 3px solid silver;
+    border-radius: 30px;
 }
