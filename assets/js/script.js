@@ -14,11 +14,12 @@ let confettiInterval;
 let isMusicPlaying = false;
 let answerSelected = false;
 let gameStarted = false;
-let currentDifficulty = "easy";
-
+let currentDifficulty = "easy"; 
 
 const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
-const wrongAnswerSound = new Audio('assets/sounds/wronganswers.mp3');
+const wrongAnswerSound = new Audio('assets/sounds/wronganswer.mp3');
+const wrongAnswerImmediateSound = new Audio('assets/sounds/wronganswerimmediate.mp3');
+const awwwwSound = new Audio('assets/sounds/awwww.mp3');
 const backgroundMusic = new Audio('assets/sounds/backgroundmusic.mp3');
 const startGameSound = new Audio('assets/sounds/startgame.mp3');
 const clappingSound = new Audio('assets/sounds/clapping.mp3');
@@ -30,6 +31,7 @@ function toggleMusic() {
         backgroundMusic.pause();
         correctAnswerSound.muted = true;
         wrongAnswerSound.muted = true;
+        awwwwSound.muted = true;
         clappingSound.muted = true;
         document.getElementById('toggle-music').textContent = "Turn Music On";
     } else {
@@ -38,6 +40,7 @@ function toggleMusic() {
         });
         correctAnswerSound.muted = false;
         wrongAnswerSound.muted = false;
+        awwwwSound.muted = false;
         clappingSound.muted = false;
         document.getElementById('toggle-music').textContent = "Turn Music Off";
     }
@@ -101,6 +104,7 @@ function updateTimer() {
 }
 
 function handleTimeOut() {
+    playMultipleSounds([wrongAnswerSound, awwwwSound]);
     showTimeoutOverlay();
 }
 
@@ -164,7 +168,7 @@ function resetAnswerButtonBackgrounds() {
 
 function adjustQuestionFontSize(text) {
     const questionContainer = document.querySelector('.question-container');
-    const maxHeight = questionContainer.clientHeight - 20;
+    const maxHeight = questionContainer.clientHeight - 20; 
     const maxWidth = questionContainer.clientWidth - 20;
     let fontSize = 32;
     questionElement.style.fontSize = `${fontSize}px`;
@@ -215,7 +219,7 @@ function selectAnswer(selected, correct, button) {
     if (selected === correct) {
         playSound(correctAnswerSound, 5000);
         if (currentQuestionIndex === 14 && isMusicPlaying) {
-            clappingSound.play();
+            clappingSound.play(); 
         }
         flashCorrectAnswer(button, () => {
             currentPrize = prizeAmounts[currentQuestionIndex];
@@ -231,7 +235,7 @@ function selectAnswer(selected, correct, button) {
             }
         });
     } else {
-        playSound(wrongAnswerSound);
+        playMultipleSounds([wrongAnswerSound, awwwwSound]);
         flashWrongAnswer(button, correct);
     }
 }
@@ -246,6 +250,7 @@ function flashCorrectAnswer(button, callback) {
 }
 
 function flashWrongAnswer(button, correctAnswer) {
+    playMultipleSounds([wrongAnswerSound, awwwwSound]);
     button.classList.add('flash-red');
     setTimeout(() => {
         button.classList.remove('flash-red');
@@ -507,22 +512,34 @@ function playSound(sound, duration) {
     }
 }
 
+function playMultipleSounds(sounds) {
+    if (isMusicPlaying) {
+        sounds.forEach(sound => {
+            sound.play().catch(error => {
+                console.error("Sound play error: ", error);
+            });
+        });
+    }
+}
+
 function changeDifficulty() {
     currentDifficulty = difficultySelect.value;
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchQuestions();
 });
 
+
 startButton.onclick = () => {
     startGame();
 };
 
+
 nextQuestionButton.onclick = () => {
     nextQuestion();
 };
+
 
 document.getElementById('rules-button').onclick = () => {
     showRules();
@@ -542,6 +559,7 @@ document.querySelectorAll('.overlay button').forEach(button => {
     };
 });
 
+
 document.querySelectorAll('.lifeline-btn').forEach(button => {
     button.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -549,7 +567,6 @@ document.querySelectorAll('.lifeline-btn').forEach(button => {
         }
     });
 });
-
 
 
 function hideRules() {

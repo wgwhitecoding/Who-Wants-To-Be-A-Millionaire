@@ -5,7 +5,7 @@ body {
     background-size: cover;
     color: #fff;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     height: 100vh;
     margin: 0;
@@ -25,7 +25,6 @@ body {
     top: 0;
     z-index: 1000;
 }
-
 
 .logo-container {
     position: absolute;
@@ -70,7 +69,7 @@ body {
 
 
 .prize-list-container {
-    flex: 1; 
+    flex: 1;
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 15px;
     padding: 20px;
@@ -132,7 +131,7 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     margin-bottom: 60px;
-    width: 100%; 
+    width: 100%;
     margin-left: 3px;
 }
 
@@ -172,13 +171,13 @@ body {
 }
 
 #difficulty-level {
-    appearance: none; 
+    appearance: none;
     background-color: #444;;
     color: #fff;
     padding: 10px 20px;
     font-size: 16px;
     border: 3px solid silver;
-    border-radius: 10px;
+    border-radius: 30px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
@@ -247,12 +246,11 @@ body {
     color: #ffa500;
 }
 
-
 .lifelines-container {
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
-    width: 100%; 
+    width: 100%;
     margin-left: 10px;
 }
 
@@ -260,7 +258,6 @@ body {
 .lifeline-wrapper {
     position: relative;
 }
-
 
 .lifeline-btn {
     width: 150px;
@@ -285,18 +282,16 @@ body {
     display: none;
 }
 
-
 .friend-suggestion {
     background-color: #222;
     padding: 10px;
     border-radius: 10px;
     margin-top: 20px;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
     font-size: 1.2em;
     color: #ffa500;
     width: 100%;
 }
-
 
 .overlay {
     display: none;
@@ -344,7 +339,6 @@ body {
     background-color: #555;
 }
 
-
 @keyframes confetti {
     0% {
         transform: translateY(0) rotate(0);
@@ -375,10 +369,9 @@ body {
     animation-timing-function: ease-out;
 }
 
-
 .next-question {
     position: absolute;
-    top: 710px; 
+    top: 710px;
     left: 32%; 
     transform: translateX(-50%);
     padding: 10px 20px;
@@ -417,7 +410,6 @@ body {
     background-color: #ffa500;
 }
 
-
 .timer-container {
     width: 102%;
     background-color: #444;
@@ -448,7 +440,6 @@ body {
     font-size: 3em;
     color: #fff;
 }
-
 
 @media (max-width: 1024px) {
     .game-container {
