@@ -14,7 +14,8 @@ let confettiInterval;
 let isMusicPlaying = false;
 let answerSelected = false;
 let gameStarted = false;
-let currentDifficulty = "easy"; 
+let currentDifficulty = "easy";
+
 
 const correctAnswerSound = new Audio('assets/sounds/correctanswer.mp3');
 const wrongAnswerSound = new Audio('assets/sounds/wronganswers.mp3');
@@ -55,7 +56,7 @@ const finalPrizeElement = document.getElementById('final-prize');
 const confettiContainer = document.getElementById('confetti-container');
 const startButton = document.getElementById('start-button');
 const nextQuestionButton = document.getElementById('next-question');
-const timerElement = document.getElementById('timer');
+const timerElement = document.querySelector('.timer-text');
 const difficultySelect = document.getElementById('difficulty-level');
 
 let timerInterval;
@@ -77,7 +78,7 @@ async function fetchQuestions() {
     } catch (error) {
         console.error("Error fetching questions: ", error);
         
-        questionElement.textContent = 'Failed to load questions. Refresh this page or Please try again later.';
+        questionElement.innerHTML = '<span style="color:red;">Failed to load questions. Please refresh the page or try again later.</span>';
     }
 }
 
@@ -85,12 +86,14 @@ function startTimer() {
     clearInterval(timerInterval);
     timeLeft = 30;
     timerElement.textContent = timeLeft;
+    document.getElementById('timer-progress').style.width = '100%';
     timerInterval = setInterval(updateTimer, 1000);
 }
 
 function updateTimer() {
     timeLeft--;
     timerElement.textContent = timeLeft;
+    document.getElementById('timer-progress').style.width = (timeLeft / 30) * 100 + '%';
     if (timeLeft <= 0) {
         clearInterval(timerInterval);
         handleTimeOut();
@@ -126,8 +129,9 @@ function resetGame() {
     disableAnswerButtons();
     startButton.style.display = 'block';
     difficultySelect.disabled = false;
-    fetchQuestions(); 
+    fetchQuestions();
     resetPrizeHighlight();
+    updateScoreDisplay();
 }
 
 function clearQuestionAndAnswers() {
@@ -160,9 +164,9 @@ function resetAnswerButtonBackgrounds() {
 
 function adjustQuestionFontSize(text) {
     const questionContainer = document.querySelector('.question-container');
-    const maxHeight = questionContainer.clientHeight - 20; 
-    const maxWidth = questionContainer.clientWidth - 20; 
-    let fontSize = 32; 
+    const maxHeight = questionContainer.clientHeight - 20;
+    const maxWidth = questionContainer.clientWidth - 20;
+    let fontSize = 32;
     questionElement.style.fontSize = `${fontSize}px`;
     questionElement.innerHTML = text;
 
@@ -211,10 +215,11 @@ function selectAnswer(selected, correct, button) {
     if (selected === correct) {
         playSound(correctAnswerSound, 5000);
         if (currentQuestionIndex === 14 && isMusicPlaying) {
-            clappingSound.play(); 
+            clappingSound.play();
         }
         flashCorrectAnswer(button, () => {
             currentPrize = prizeAmounts[currentQuestionIndex];
+            updateScoreDisplay();
             highlightCurrentPrize();
             if (currentQuestionIndex < questions.length - 1) {
                 setTimeout(() => {
@@ -288,6 +293,10 @@ function highlightCurrentPrize() {
             }, 1500);
         }
     });
+}
+
+function updateScoreDisplay() {
+    document.getElementById('score-display').textContent = `Score: £${currentPrize}`;
 }
 
 function useFiftyFifty() {
@@ -492,7 +501,7 @@ function playSound(sound, duration) {
         if (duration) {
             setTimeout(() => {
                 sound.pause();
-                sound.currentTime = 0; 
+                sound.currentTime = 0;
             }, duration);
         }
     }
@@ -501,6 +510,7 @@ function playSound(sound, duration) {
 function changeDifficulty() {
     currentDifficulty = difficultySelect.value;
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchQuestions();
@@ -531,6 +541,16 @@ document.querySelectorAll('.overlay button').forEach(button => {
         }
     };
 });
+
+document.querySelectorAll('.lifeline-btn').forEach(button => {
+    button.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            button.click();
+        }
+    });
+});
+
+
 
 function hideRules() {
     rulesOverlayElement.style.display = "none";

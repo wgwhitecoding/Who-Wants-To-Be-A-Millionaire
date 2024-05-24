@@ -5,7 +5,7 @@ body {
     background-size: cover;
     color: #fff;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     align-items: center;
     height: 100vh;
     margin: 0;
@@ -59,13 +59,13 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; 
+    align-items: flex-start;
 }
 
 
 .game-content {
-    flex: 2; 
-    padding-right: 20px; 
+    flex: 2;
+    padding-right: 20px;
 }
 
 
@@ -152,7 +152,7 @@ body {
 }
 
 .answer-btn {
-    width: 105%;
+    width: 100%;
     padding: 10px 20px;
     font-size: 16px;
     background-color:#444;
@@ -291,7 +291,7 @@ body {
     padding: 10px;
     border-radius: 10px;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 20px; 
     font-size: 1.2em;
     color: #ffa500;
     width: 100%;
@@ -378,7 +378,7 @@ body {
 
 .next-question {
     position: absolute;
-    top: 690px; 
+    top: 710px; 
     left: 32%; 
     transform: translateX(-50%);
     padding: 10px 20px;
@@ -389,7 +389,7 @@ body {
     border-radius: 30px;
     cursor: pointer;
     z-index: 1000;
-    display: none; 
+    display: none;
     width: 50%;
 }
 
@@ -399,7 +399,7 @@ body {
 
 .start-button {
     position: absolute;
-    top: 690px; 
+    top: 710px;
     left: 32%; 
     transform: translateX(-50%);
     padding: 10px 20px;
@@ -417,16 +417,157 @@ body {
     background-color: #ffa500;
 }
 
-.timer {
-    font-size: 2em;
-    color: #fff;
+
+.timer-container {
+    width: 102%;
     background-color: #444;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    margin-bottom: 40px;
-    width: 100%;
-    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
     border: 3px solid silver;
     border-radius: 30px;
+    margin-top: 20px;
+}
+
+.timer-progress {
+    height: 50px;
+    background-color: #ffa500;
+    width: 100%;
+    transition: width 1s linear;
+    width: 110%;
+    border: 3px solid silver;
+    border-radius: 30px;
+}
+
+.timer-text {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3em;
+    color: #fff;
+}
+
+
+@media (max-width: 1024px) {
+    .game-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .prize-list-container {
+        margin-left: 0;
+        margin-top: 20px;
+    }
+
+    .lifelines-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .lifeline-wrapper {
+        margin-bottom: 10px;
+    }
+
+    .next-question,
+    .start-button {
+        width: 80%;
+    }
+
+    .timer-container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+    }
+
+    .logo-container {
+        position: static;
+        margin-bottom: 20px;
+    }
+
+    .game-container {
+        padding: 10px;
+    }
+
+    .game-content {
+        padding-right: 0;
+    }
+
+    .question-container {
+        font-size: 1.2em;
+    }
+
+    .answer-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .lifelines-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .lifeline-wrapper {
+        margin-bottom: 10px;
+        flex: 1 1 100px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .next-question,
+    .start-button {
+        top: auto;
+        bottom: 20px;
+        width: 90%;
+    }
+
+    .timer-text {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 5px 10px;
+    }
+
+    .game-container {
+        padding: 5px;
+    }
+
+    .question-container {
+        font-size: 1em;
+        height: auto;
+    }
+
+    .answer-btn {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+
+    .lifelines-container {
+        flex-direction: column;
+    }
+
+    .lifeline-wrapper {
+        margin-bottom: 5px;
+    }
+
+    .friend-suggestion {
+        font-size: 1em;
+    }
+
+    .next-question,
+    .start-button {
+        width: 95%;
+    }
+
+    .timer-text {
+        font-size: 1.5em;
+    }
 }

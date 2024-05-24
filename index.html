@@ -9,7 +9,6 @@
 <body>
     <div class="header">
         <button id="rules-button">Rules</button>
-        
         <select id="difficulty-level" onchange="changeDifficulty()">
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
@@ -23,7 +22,11 @@
     <div class="game-wrapper">
         <div class="game-container">
             <div class="game-content">
-                <div id="timer" class="timer">30</div>
+                <div id="score-display" class="score-display">Score: £0</div>
+                <div id="timer" class="timer-container">
+                    <div id="timer-progress" class="timer-progress"></div>
+                    <div class="timer-text">30</div>
+                </div>
                 <div class="question-container">
                     <h2 id="question">Welcome to Who Wants to be a Millionaire!</h2>
                 </div>
@@ -41,14 +44,17 @@
                     <div class="lifeline-wrapper">
                         <img src="assets/images/Who Wants To Be A Millionaire_Phone.png" alt="Phone a Friend" class="lifeline-btn" id="phone-a-friend" onclick="phoneAFriend()">
                         <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="phone-a-friend-used">
+                        
                     </div>
                     <div class="lifeline-wrapper">
                         <img src="assets/images/Who Wants To Be A Millionaire_Audience.png" alt="Ask the Audience" class="lifeline-btn" id="ask-the-audience" onclick="askTheAudience()">
                         <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="ask-the-audience-used">
+
                     </div>
                 </div>
                 <div id="friend-suggestion" class="friend-suggestion">
-                   
+                    
+                    <!-- Friend's suggestion will be displayed here -->
                 </div>
                 <button id="start-button" class="start-button" onclick="startGame()">Start Game</button>
                 <button id="next-question" class="next-question" onclick="nextQuestion()">Next Question</button>
