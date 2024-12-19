@@ -56,9 +56,6 @@ The **Who Wants to Be a Millionaire** game challenges players with a series of m
 **Desktop:**
 - **Mouse Clicks:** Select answers or activate lifelines.
 
-**Mobile:**
-- **Touch:** Tap on answers or lifelines to interact with the game.
-
 ---
 
 ## Game Mechanics
