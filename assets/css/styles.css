@@ -1,7 +1,8 @@
-/* General body styles */
+/* ================= ORIGINAL FIXED LAYOUT ================= */
 body {
     font-family: Arial, sans-serif;
-    background: radial-gradient(circle, rgba(30, 30, 60, 1) 0%, rgba(30, 30, 60, 1) 35%, rgba(30, 30, 60, 0.8) 70%, rgba(30, 30, 60, 0.6) 100%), url(../images/oriental-tiles.png);
+    background: radial-gradient(circle, rgba(30, 30, 60, 1) 0%, rgba(30, 30, 60, 1) 35%, rgba(30, 30, 60, 0.8) 70%, rgba(30, 30, 60, 0.6) 100%), 
+                url(../images/oriental-tiles.png);
     background-size: cover;
     color: #fff;
     display: flex;
@@ -9,9 +10,8 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    overflow: hidden;
+    overflow: hidden; 
 }
-
 
 .header {
     display: flex;
@@ -31,12 +31,10 @@ body {
     top: 80px;
     left: 60px;
 }
-
 .logo {
     width: 150px;
     height: auto;
 }
-
 
 .game-wrapper {
     display: flex;
@@ -47,7 +45,6 @@ body {
     max-width: 1200px;
     margin-top: 120px;
 }
-
 
 .game-container {
     background-color: rgba(0, 0, 0, 0.8);
@@ -61,12 +58,10 @@ body {
     align-items: flex-start;
 }
 
-
 .game-content {
     flex: 2;
     padding-right: 20px;
 }
-
 
 .prize-list-container {
     flex: 1;
@@ -83,7 +78,6 @@ body {
     padding: 0;
     margin: 0;
 }
-
 #prize-list li {
     background-color: #3f1a51;
     padding: 10px;
@@ -96,19 +90,16 @@ body {
     border-radius: 30px;
     height: 18px;
 }
-
 #prize-list #prize-15,
 #prize-list #prize-10,
 #prize-list #prize-5 {
     color: #fff;
 }
-
 #prize-list .highlight {
     background-color: orange;
     color: #000;
     font-weight: bold;
 }
-
 
 .question-container {
     margin-bottom: 40px;
@@ -125,7 +116,6 @@ body {
     width: 100%; 
 }
 
-
 .answers-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -134,7 +124,6 @@ body {
     width: 100%;
     margin-left: 3px;
 }
-
 
 #toggle-music,
 #rules-button,
@@ -162,7 +151,6 @@ body {
     transition: background-color 0.3s;
     min-height: 50px;
 }
-
 .answer-btn:hover,
 #toggle-music:hover,
 #rules-button:hover,
@@ -181,52 +169,33 @@ body {
     cursor: pointer;
     transition: background-color 0.3s;
 }
-
 #difficulty-level::after {
     content: '▼'; 
     padding-left: 10px;
     color: #fff;
 }
 
-
 .correct {
     background-color: green !important;
 }
-
-
 @keyframes flashGreen {
-    0%,
-    100% {
-        background-color: #444;
-    }
-    50% {
-        background-color: green;
-    }
+    0%, 100% { background-color: #444; }
+    50% { background-color: green; }
 }
-
 .flash-green {
     animation: flashGreen 0.5s 3;
 }
 
-
 @keyframes flashRed {
-    0%,
-    100% {
-        background-color: #444;
-    }
-    50% {
-        background-color: red;
-    }
+    0%, 100% { background-color: #444; }
+    50% { background-color: red; }
 }
-
 .flash-red {
     animation: flashRed 0.5s 3;
 }
 
-
 @keyframes flashOrange {
-    0%,
-    100% {
+    0%, 100% {
         background-color: #444;
         color: #fff;
     }
@@ -235,12 +204,9 @@ body {
         color: #000;
     }
 }
-
 .flash-orange {
     animation: flashOrange 0.5s 3;
 }
-
-
 .answer-btn .percentage {
     font-size: 0.9em;
     color: #ffa500;
@@ -253,12 +219,9 @@ body {
     width: 100%;
     margin-left: 10px;
 }
-
-
 .lifeline-wrapper {
     position: relative;
 }
-
 .lifeline-btn {
     width: 150px;
     height: 90px;
@@ -266,12 +229,9 @@ body {
     transition: transform 0.3s;
     border-radius: 10px;
 }
-
 .lifeline-btn:hover {
     transform: scale(1.1);
 }
-
-
 .lifeline-used {
     position: absolute;
     top: 0;
@@ -281,7 +241,6 @@ body {
     transform: scale(1.2);
     display: none;
 }
-
 .friend-suggestion {
     background-color: #222;
     padding: 10px;
@@ -305,7 +264,6 @@ body {
     align-items: center;
     z-index: 1000;
 }
-
 .overlay-content {
     background-color: #333;
     padding: 30px;
@@ -314,17 +272,14 @@ body {
     color: #fff;
     border: 2px solid silver;
 }
-
 .overlay-content h2 {
     font-size: 2em;
     margin-bottom: 20px;
 }
-
 .overlay-content p {
     font-size: 1.5em;
     margin-bottom: 20px;
 }
-
 .overlay-content button {
     padding: 10px 20px;
     font-size: 1.2em;
@@ -334,7 +289,6 @@ body {
     cursor: pointer;
     color: #fff;
 }
-
 .overlay-content button:hover {
     background-color: #555;
 }
@@ -349,7 +303,6 @@ body {
         opacity: 0;
     }
 }
-
 .confetti {
     position: absolute;
     width: 15px;
@@ -360,11 +313,9 @@ body {
     animation: confetti 4s linear infinite;
     opacity: 0;
 }
-
 .confetti:nth-child(odd) {
     animation-timing-function: ease-in;
 }
-
 .confetti:nth-child(even) {
     animation-timing-function: ease-out;
 }
@@ -385,7 +336,6 @@ body {
     display: none;
     width: 50%;
 }
-
 .next-question:hover {
     background-color: #ffa500;
 }
@@ -405,7 +355,6 @@ body {
     z-index: 1000;
     width: 50%;
 }
-
 .start-button:hover {
     background-color: #ffa500;
 }
@@ -421,17 +370,14 @@ body {
     border-radius: 30px;
     margin-top: 20px;
 }
-
 .timer-progress {
     height: 50px;
     background-color: #ffa500;
     width: 100%;
     transition: width 1s linear;
     width: 110%;
-   
     border-radius: 30px;
 }
-
 .timer-text {
     position: absolute;
     top: 0;
@@ -441,124 +387,135 @@ body {
     color: #fff;
 }
 
-@media (max-width: 1024px) {
-    .game-container {
-        flex-direction: column;
-        align-items: center;
-    }
+/* ================= DEVICE MESSAGES ================= */
+.device-message {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.95);
+    color: white;
+    text-align: center;
+    z-index: 9999;
+    padding: 40px;
+    box-sizing: border-box;
+}
+.device-message h2 {
+    font-size: 2em;
+    margin: 20px 0;
+}
+.device-message p {
+    font-size: 1.2em;
+}
 
-    .prize-list-container {
-        margin-left: 0;
-        margin-top: 20px;
-    }
+/* 
+   ========== MEDIA QUERIES LOGIC ==========
+   1) Phones (width < 820 or < 1024) => "Unsupported"
+   2) iPad in Portrait => "Rotate"
+   3) iPad Air in Landscape => scale(0.9)
+   4) iPad Pro in Landscape => no scale (or different scale)
+   5) Desktop => normal
+*/
 
-    .lifelines-container {
-        flex-direction: column;
-        align-items: center;
+/* 1) "Unsupported" for non-iPad devices under 1024px wide */
+@media only screen and (max-width: 1023px) {
+    #unsupported-message {
+        display: block;
     }
-
-    .lifeline-wrapper {
-        margin-bottom: 10px;
-    }
-
-    .next-question,
-    .start-button {
-        width: 80%;
-    }
-
-    .timer-container {
-        width: 100%;
+    .header,
+    .game-wrapper,
+    .logo-container {
+        display: none;
     }
 }
 
-@media (max-width: 768px) {
-    .header {
-        flex-direction: column;
+/* 2) iPad in portrait => "Rotate" 
+   We detect any iPad (Air or Pro) in orientation: portrait
+   with min-device-width >= 768 (excludes phones). */
+@media only screen and (orientation: portrait) 
+  and (min-device-width: 768px)
+  and (max-device-width: 1366px) {
+    #unsupported-message {
+        display: none;
+    }
+    #rotate-device-message {
+        display: block;
+    }
+    .header,
+    .game-wrapper,
+    .logo-container {
+        display: none;
+    }
+}
+
+/* 3) iPad Air in LANDSCAPE:
+   Typically ~ 820–834 wide (device width) up to ~ 1112–1180 tall
+   => scale(0.9) to fit
+*/
+@media only screen 
+  and (min-device-width: 820px)
+  and (max-device-width: 1180px) 
+  and (orientation: landscape) {
+    
+    /* Hide any messages */
+    #unsupported-message,
+    #rotate-device-message {
+        display: none;
+    }
+    .header,
+    .game-wrapper {
+        display: block;
     }
 
     .logo-container {
-        position: static;
-        margin-bottom: 20px;
+        display: none !important;
     }
 
-    .game-container {
-        padding: 10px;
-    }
-
-    .game-content {
-        padding-right: 0;
-    }
-
-    .question-container {
-        font-size: 1.2em;
-    }
-
-    .answer-btn {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
-
-    .lifelines-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .lifeline-wrapper {
-        margin-bottom: 10px;
-        flex: 1 1 100px;
-        display: flex;
-        justify-content: center;
-    }
-
-    .next-question,
-    .start-button {
-        top: auto;
-        bottom: 20px;
-        width: 90%;
-    }
-
-    .timer-text {
-        font-size: 2em;
+    /* Scale game to fit iPad Air screen */
+    .game-wrapper {
+        transform: scale(0.85) !important;
+        transform-origin: top center;
     }
 }
 
-@media (max-width: 480px) {
-    .header {
-        padding: 5px 10px;
+
+@media only screen 
+  and (min-device-width: 1024px)
+  and (max-device-width: 1366px)
+  and (orientation: landscape) {
+    
+    /* Hide messages */
+    #unsupported-message,
+    #rotate-device-message {
+        display: none;
+    }
+    .header,
+    .game-wrapper {
+        display: block;
     }
 
-    .game-container {
-        padding: 5px;
+    .logo-container {
+        display: none !important;
     }
 
-    .question-container {
-        font-size: 1em;
-        height: auto;
-    }
-
-    .answer-btn {
-        font-size: 12px;
-        padding: 5px 10px;
-    }
-
-    .lifelines-container {
-        flex-direction: column;
-    }
-
-    .lifeline-wrapper {
-        margin-bottom: 5px;
-    }
-
-    .friend-suggestion {
-        font-size: 1em;
-    }
-
-    .next-question,
-    .start-button {
-        width: 95%;
-    }
-
-    .timer-text {
-        font-size: 1.5em;
+    .game-wrapper {
+        transform: scale(1);
+        transform-origin: top center;
     }
 }
+
+@media only screen and (min-width: 1367px) {
+    #unsupported-message,
+    #rotate-device-message {
+        display: none;
+    }
+    .header,
+    .game-wrapper,
+    .logo-container {
+        display: block;
+    }
+}
+
+

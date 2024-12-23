@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Who Wants to Be a Millionaire</title>
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
+
 <body>
+    <!-- For devices with narrow screens (likely phones) -->
+    <div id="unsupported-message" class="device-message">
+        <h2>This game is not compatible on mobile phones.</h2>
+        <p>Please open on a desktop, laptop, or iPad (in landscape).</p>
+    </div>
+
+    <!-- For iPads (or tablets) in portrait mode -->
+    <div id="rotate-device-message" class="device-message">
+        <h2>Please rotate your device to landscape.</h2>
+    </div>
     <div class="header">
         <button id="rules-button">Rules</button>
         <select id="difficulty-level" onchange="changeDifficulty()">
@@ -17,7 +29,8 @@
         <button id="toggle-music" onclick="toggleMusic()">Turn Music Off</button>
     </div>
     <div class="logo-container">
-        <img src="assets/images/kisspng-millionaire-nigeria-game-show-television-show-quiz-5b32fa6c16cf28.9887978915300675640934.png" alt="Who Wants to Be a Millionaire Logo" class="logo">
+        <img src="assets/images/kisspng-millionaire-nigeria-game-show-television-show-quiz-5b32fa6c16cf28.9887978915300675640934.png"
+            alt="Who Wants to Be a Millionaire Logo" class="logo">
     </div>
     <div class="game-wrapper">
         <div class="game-container">
@@ -38,22 +51,27 @@
                 </div>
                 <div class="lifelines-container">
                     <div class="lifeline-wrapper">
-                        <img src="assets/images/Who Wants To Be A Millionaire_5050.png" alt="50:50" class="lifeline-btn" id="fifty-fifty" onclick="useFiftyFifty()">
+                        <img src="assets/images/Who Wants To Be A Millionaire_5050.png" alt="50:50" class="lifeline-btn"
+                            id="fifty-fifty" onclick="useFiftyFifty()">
                         <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="fifty-fifty-used">
                     </div>
                     <div class="lifeline-wrapper">
-                        <img src="assets/images/Who Wants To Be A Millionaire_Phone.png" alt="Phone a Friend" class="lifeline-btn" id="phone-a-friend" onclick="phoneAFriend()">
-                        <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="phone-a-friend-used">
-                        
+                        <img src="assets/images/Who Wants To Be A Millionaire_Phone.png" alt="Phone a Friend"
+                            class="lifeline-btn" id="phone-a-friend" onclick="phoneAFriend()">
+                        <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used"
+                            id="phone-a-friend-used">
+
                     </div>
                     <div class="lifeline-wrapper">
-                        <img src="assets/images/Who Wants To Be A Millionaire_Audience.png" alt="Ask the Audience" class="lifeline-btn" id="ask-the-audience" onclick="askTheAudience()">
-                        <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used" id="ask-the-audience-used">
+                        <img src="assets/images/Who Wants To Be A Millionaire_Audience.png" alt="Ask the Audience"
+                            class="lifeline-btn" id="ask-the-audience" onclick="askTheAudience()">
+                        <img src="assets/images/red-cross.png" alt="Used" class="lifeline-used"
+                            id="ask-the-audience-used">
 
                     </div>
                 </div>
                 <div id="friend-suggestion" class="friend-suggestion">
-                    
+
                 </div>
                 <button id="start-button" class="start-button" onclick="startGame()">START GAME</button>
                 <button id="next-question" class="next-question" onclick="nextQuestion()">Next Question</button>
@@ -103,7 +121,7 @@
     <div id="rules-overlay" class="overlay">
         <div class="overlay-content">
             <h2>Game Rules</h2>
-            <p>1. Choose difficulty.</p> 
+            <p>1. Choose difficulty.</p>
             <p>2. Answer the questions correctly to win the prize.</p>
             <p>3. Use lifelines to help answer difficult questions.</p>
             <p>4. You have 30 seconds to answer each question.</p>
@@ -113,4 +131,5 @@
     <div id="confetti-container"></div>
     <script src="assets/js/script.js"></script>
 </body>
+
 </html>
